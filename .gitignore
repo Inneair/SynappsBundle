@@ -1,0 +1,5 @@
+.settings/
+reports/
+vendor/
+.buildpath
+.project

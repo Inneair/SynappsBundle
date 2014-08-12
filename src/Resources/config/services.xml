@@ -1,0 +1,102 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="inneair_synapps.abstractcontroller.class">Inneair\SynappsBundle\Controller\AbstractController</parameter>
+        <parameter key="inneair_synapps.abstractservice.class">Inneair\SynappsBundle\Service\AbstractService</parameter>
+        <parameter key="inneair_synapps.httprequestvalidator.class">Inneair\SynappsBundle\Validator\Constraints\HttpRequestParametersValidator</parameter>
+        <parameter key="inneair_synapps.notinvalidator.class">Inneair\SynappsBundle\Validator\Constraints\NotInValidator</parameter>
+        <parameter key="inneair_synapps.object_constructor.class">Inneair\SynappsBundle\Serializer\DefaultObjectConstructor</parameter>
+        <parameter key="inneair_synapps.transactional_interceptor.class">Inneair\SynappsBundle\Aop\TransactionalInterceptor</parameter>
+        <parameter key="inneair_synapps.transactional_pointcut.class">Inneair\SynappsBundle\Aop\TransactionalPointcut</parameter>
+        <parameter key="inneair_synapps.serializer_visitors.class">Inneair\SynappsBundle\PhpCollection\Map</parameter>
+    </parameters>
+
+    <services>
+        <!-- Inneair Synapps services -->
+        <!-- Core abstract service -->
+        <service id="inneair_synapps.abstractservice" class="%inneair_synapps.abstractservice.class%" abstract="true">
+            <call method="setEventDispatcher">
+                <argument type="service" id="event_dispatcher" />
+            </call>
+            <call method="setEntityManagerRegistry">
+                <argument type="service" id="doctrine" />
+            </call>
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <call method="init" />
+        </service>
+
+        <!-- Inneair web controllers -->
+        <!-- Core abstract controller -->
+        <service id="inneair_synapps.abstractcontroller" class="%inneair_synapps.abstractcontroller.class%" abstract="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+            <call method="setTranslator">
+                <argument type="service" id="translator" />
+            </call>
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <call method="init" />
+        </service>
+
+        <!-- Inneair validators -->
+        <!-- HTTP request validator -->
+        <service id="inneair_synapps.httprequestvalidator" class="%inneair_synapps.httprequestvalidator.class%" scope="request">
+            <argument type="service" id="request_stack" />
+            <tag name="validator.constraint_validator" alias="httprequestparametersvalidator" />
+        </service>
+        <!-- NotIn validator -->
+        <service id="inneair_synapps.notinvalidator" class="%inneair_synapps.notinvalidator.class%">
+            <tag name="validator.constraint_validator" alias="notinvalidator" />
+        </service>
+
+        <!-- Inneair AOP -->
+        <!-- Transactional annotation pointcut -->
+        <service id="inneair_synapps.transactional_pointcut" class="%inneair_synapps.transactional_pointcut.class%">
+            <argument type="service" id="annotation_reader" />
+            <argument type="service" id="logger" />
+            <argument type="constant">true</argument>
+            <tag name="jms_aop.pointcut" interceptor="inneair_synapps.transactional_interceptor" />
+        </service>
+        <!-- Interceptor for transaction management -->
+        <service id="inneair_synapps.transactional_interceptor" class="%inneair_synapps.transactional_interceptor.class%">
+            <argument type="service" id="service_container" />
+            <argument type="service" id="doctrine" />
+            <argument type="service" id="annotation_reader" />
+            <argument type="service" id="logger" />
+        </service>
+
+        <!-- JMS serializer configuration -->
+        <!-- Object constructor used for deserialization -->
+        <service id="inneair_synapps.object_constructor" class="%inneair_synapps.object_constructor.class%">
+            <argument type="service" id="jms_serializer.unserialize_object_constructor" />
+            <argument type="service" id="logger" />
+        </service>
+        <!-- Formats supported for serialization -->
+        <service id="inneair_synapps.serialization_visitors" class="%inneair_synapps.serializer_visitors.class%">
+            <argument key="json" type="service" id="jms_serializer.json_serialization_visitor" />
+            <argument key="xml" type="service" id="jms_serializer.xml_serialization_visitor" />
+            <argument key="yaml" type="service" id="jms_serializer.yaml_serialization_visitor" />
+        </service>
+        <!-- Formats supported for deserialization -->
+        <service id="inneair_synapps.deserialization_visitors" class="%inneair_synapps.serializer_visitors.class%">
+            <argument key="json" type="service" id="jms_serializer.json_deserialization_visitor" />
+            <argument key="xml" type="service" id="jms_serializer.xml_deserialization_visitor" />
+        </service>
+        <!-- JMS serialiser -->
+        <service id="inneair_synapps.serializer" class="%jms_serializer.serializer.class%">
+            <argument type="service" id="jms_serializer.metadata_factory" />
+            <argument type="service" id="jms_serializer.handler_registry" />
+            <argument type="service" id="inneair_synapps.object_constructor" />
+            <argument type="service" id="inneair_synapps.serialization_visitors" />
+            <argument type="service" id="inneair_synapps.deserialization_visitors" />
+            <argument type="service" id="jms_serializer.event_dispatcher" />
+        </service>
+    </services>
+</container>
