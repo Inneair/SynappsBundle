@@ -35,8 +35,7 @@ class HttpRequestParameters extends Constraint
      */
     public function validatedBy()
     {
-        // Returning the constraint 'alias' is mandatory so as Symfony can
-        // inject dependencies.
+        // Returning the constraint 'alias' is mandatory so as Symfony can inject dependencies.
         return 'httprequestparametersvalidator';
     }
 }
