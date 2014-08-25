@@ -31,7 +31,7 @@
 	},
 	"require" : {
 		"php" : "5.5.*",
-		"inneair/synapps" : "dev-master",
+		"inneair/synapps" : "~1.0-dev",
 		"symfony/symfony" : "~2.5",
 		"doctrine/orm" : "~2.2,>=2.2.3",
 		"friendsofsymfony/rest-bundle" : "~1.2",
@@ -40,5 +40,10 @@
 		"jms/serializer" : "0.15",
 		"jms/serializer-bundle" : "~0.13"
 	},
-	"minimum-stability" : "stable"
+	"minimum-stability" : "stable",
+    "extra" : {
+        "branch-alias" : {
+            "dev-master" : "1.0.x-dev"
+        }
+    }
 }
