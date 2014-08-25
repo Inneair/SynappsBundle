@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:framework="http://symfony.com/schema/dic/symfony"
+    xmlns:twig="http://symfony.com/schema/dic/twig"
+    xmlns:assetic="http://symfony.com/schema/dic/assetic"
+    xmlns:doctrine="http://symfony.com/schema/dic/doctrine"
+    xmlns:swiftmailer="http://symfony.com/schema/dic/swiftmailer"
+    xmlns:sensio-framework-extra="http://symfony.com/schema/dic/symfony_extra"
+    xmlns:fos_rest="http://example.org/schema/dic/fos_rest"
+    xmlns:fos_user="http://example.org/schema/dic/fos_user"
+    xmlns:jms_aop="http://example.org/schema/dic/jms_aop"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+        http://symfony.com/schema/dic/symfony http://symfony.com/schema/dic/symfony/symfony-1.0.xsd
+        http://symfony.com/schema/dic/twig http://symfony.com/schema/dic/twig/twig-1.0.xsd
+        http://symfony.com/schema/dic/assetic http://symfony.com/schema/dic/assetic/assetic-1.0.xsd
+        http://symfony.com/schema/dic/doctrine http://symfony.com/schema/dic/doctrine/doctrine-1.0.xsd
+        http://symfony.com/schema/dic/swiftmailer http://symfony.com/schema/dic/swiftmailer/swiftmailer-1.0.xsd">
+
+    <!-- FOS Rest configuration -->
+    <fos_rest:config>
+        <service serializer="inneair_synapps.serializer" />
+        <serializer serialize-null="true" />
+        <view view-response-listener="true" />
+    </fos_rest:config>
+
+    <!-- FOS user configuration -->
+    <fos_user:config db-driver="orm" firewall-name="bo" user-class="Inneair\SynappsBundle\Entity\Account" />
+
+    <!-- JMS AOP configuration -->
+    <jms_aop:config cache-dir="%kernel.cache_dir%/jms_aop" />
+</container>
