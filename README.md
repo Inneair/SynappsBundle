@@ -1,7 +1,8 @@
 Inneair Synapps bundle for Symfony
 =======
 
-# Introduction #
+Introduction
+------
 
 This bundle integrates the Synapps library into Symfony, and provide additional features such as:
 * Efficient transaction management in services with annotations and AOP.
@@ -11,9 +12,8 @@ This bundle integrates the Synapps library into Symfony, and provide additional 
 * A base class to define business services in Symfony.
 * Additional validators, for instance to check HTTP request parameters.
 
+Change log
 ------
-
-# Change log #
 
 This changelog references the relevant changes (bug fixes, security fixes, new features, improvements, documentation fixes) done in Tegami.
 
@@ -31,8 +31,14 @@ Syntax for changes: `<type of modification> [domain] <description>`
 
 `<description>` is a descriptive text of the modification. 
 
-------
 
-## 1.0.0-it1 (2014-09-14) ##
+# 1.0.0-it1 (2014-09-14) #
 
  * REF Migration into a dedicated VCS.
+
+License
+-------
+
+This bundle is under the MIT license. See the complete license in the bundle:
+
+    Resources/meta/LICENSE
