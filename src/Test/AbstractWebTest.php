@@ -33,7 +33,7 @@ abstract class AbstractWebTest extends WebTestCase
     /**
      * {@inheritDoc}
      */
-    protected static function createKernel(Array $options = array())
+    protected static function createKernel(array $options = array())
     {
         // Force using the environment we specify with a system variable.
         if (!isset($options['environment'])) {

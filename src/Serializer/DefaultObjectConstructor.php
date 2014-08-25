@@ -17,7 +17,7 @@ use ReflectionException;
 class DefaultObjectConstructor implements ObjectConstructorInterface
 {
     /**
-     * Fallback object constructors, in case of there is no default constructor in the class. 
+     * Fallback object constructors, in case of there is no default constructor in the class.
      * @var ObjectConstructorInterface
      */
     private $fallbackConstructor;
@@ -57,7 +57,7 @@ class DefaultObjectConstructor implements ObjectConstructorInterface
         VisitorInterface $visitor,
         ClassMetadata $metadata,
         $data,
-        Array $type,
+        array $type,
         DeserializationContext $context
     ) {
         try {
