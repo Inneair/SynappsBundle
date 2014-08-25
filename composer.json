@@ -26,7 +26,7 @@
 	],
 	"autoload" : {
 		"psr-4" : {
-			"Inneair\\SynappsBundle\\" : "src"
+			"Inneair\\SynappsBundle\\" : "src/"
 		}
 	},
 	"require" : {
@@ -35,7 +35,7 @@
 		"symfony/symfony" : "~2.5",
 		"doctrine/orm" : "~2.2,>=2.2.3",
 		"friendsofsymfony/rest-bundle" : "~1.2",
-		"friendsofsymfony/user-bundle": "~1.3",
+		"friendsofsymfony/user-bundle" : "~1.3",
 		"psr/log" : "~1.0",
 		"jms/aop-bundle" : "~1.0",
 		"jms/serializer" : "0.15",
