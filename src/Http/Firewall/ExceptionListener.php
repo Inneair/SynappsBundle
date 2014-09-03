@@ -1,6 +1,6 @@
 <?php
 
-namespace Inneair\OrigamiBundle\Http\Firewall;
+namespace Inneair\SynappsBundle\Http\Firewall;
 
 use Exception;
 use Inneair\Synapps\Util\StringUtils;
@@ -86,9 +86,7 @@ class ExceptionListener extends BaseExceptionListener
         }
 
         try {
-            $response = new Response();
-            $response->setStatusCode(Response::HTTP_UNAUTHORIZED);
-            $event->setResponse($response);
+            $event->setResponse(new Response(StringUtils::EMPTY_STR, Response::HTTP_UNAUTHORIZED));
         } catch (Exception $e) {
             $event->setException($e);
         }
