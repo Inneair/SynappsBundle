@@ -6,6 +6,7 @@
     <parameters>
         <parameter key="inneair_synapps.abstractcontroller.class">Inneair\SynappsBundle\Controller\AbstractController</parameter>
         <parameter key="inneair_synapps.abstractservice.class">Inneair\SynappsBundle\Service\AbstractService</parameter>
+        <parameter key="inneair_synapps.accountcontroller.class">Inneair\SynappsBundle\Controller\AccountController</parameter>
         <parameter key="inneair_synapps.httprequestvalidator.class">Inneair\SynappsBundle\Validator\Constraints\HttpRequestParametersValidator</parameter>
         <parameter key="inneair_synapps.notinvalidator.class">Inneair\SynappsBundle\Validator\Constraints\NotInValidator</parameter>
         <parameter key="inneair_synapps.object_constructor.class">Inneair\SynappsBundle\Serializer\DefaultObjectConstructor</parameter>
@@ -44,6 +45,8 @@
             </call>
             <call method="init" />
         </service>
+        <!-- Account management controller -->
+        <service id="inneair_synapps.accountcontroller" class="%inneair_synapps.accountcontroller.class%" parent="inneair_synapps.abstractcontroller" />
 
         <!-- Inneair validators -->
         <!-- HTTP request validator -->
