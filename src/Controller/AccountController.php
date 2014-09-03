@@ -1,6 +1,6 @@
 <?php
 
-namespace Inneair\OrigamiBundle\Controller;
+namespace Inneair\SynappsBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations\View as RestView;
 use FOS\RestBundle\View\View;
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * Web interface for accounts management.
  *
  * @author Innéair
- * @Route(service="inneair_origami.accountcontroller")
+ * @Route(service="inneair_synapps.accountcontroller")
  */
 class AccountController extends AbstractController
 {
