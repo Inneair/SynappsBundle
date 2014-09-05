@@ -15,7 +15,7 @@ This bundle integrates the Synapps library into Symfony, and provide additional 
 Change log
 ------
 
-This changelog references the relevant changes (bug fixes, security fixes, new features, improvements, documentation fixes) done in Tegami.
+This changelog references the relevant changes (bug fixes, security fixes, new features, improvements, documentation fixes) done in the bundle.
 
 Syntax for changes: `<type of modification> [domain] <description>`
 

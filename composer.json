@@ -33,6 +33,7 @@
 		"php" : "5.5.*",
 		"inneair/synapps" : "~1.0-dev",
 		"symfony/symfony" : "~2.5",
+		"sensio/framework-extra-bundle" : "~3.0",
 		"doctrine/orm" : "~2.2,>=2.2.3",
 		"friendsofsymfony/rest-bundle" : "~1.2",
 		"friendsofsymfony/user-bundle" : "~1.3",

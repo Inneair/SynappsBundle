@@ -12,8 +12,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Web interface for accounts management.
- *
- * @author Innéair
  * @Route(service="inneair_synapps.accountcontroller")
  */
 class AccountController extends AbstractController

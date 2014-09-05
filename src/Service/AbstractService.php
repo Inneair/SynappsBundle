@@ -81,7 +81,7 @@ abstract class AbstractService implements TransactionalAwareInterface
     /**
      * Gets the Doctrine's entity manager.
      *
-     * @return EntityManager A Doctrine's entity manager.
+     * @return EntityManagerInterface A Doctrine's entity manager.
      */
     protected function getEntityManager()
     {

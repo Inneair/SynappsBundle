@@ -17,8 +17,6 @@ use Symfony\Component\Security\Http\HttpUtils;
 
 /**
  * This exception listener catches authentication exceptions, and sends a 401 HTTP code in response. 
- *
- * @author Innéair
  */
 class ExceptionListener extends BaseExceptionListener
 {
@@ -28,6 +26,9 @@ class ExceptionListener extends BaseExceptionListener
      */
     private $logger;
 
+    /**
+     * {@inheritDoc}
+     */
     public function __construct(
         SecurityContextInterface $context,
         AuthenticationTrustResolverInterface $trustResolver,
@@ -54,6 +55,9 @@ class ExceptionListener extends BaseExceptionListener
 
     /**
      * Handles security related exceptions.
+     *
+     * This implementation returns 401 HTTP status code for authentication exceptions. For other exceptions, management
+     * is entrusted to the base kernel implementation.
      *
      * @param GetResponseForExceptionEvent $event An GetResponseForExceptionEvent instance
      */
