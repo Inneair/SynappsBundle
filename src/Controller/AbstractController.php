@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * Abstract web controller providing additional services over the FOS REST controller, and the Symfony controller.
@@ -134,6 +135,23 @@ abstract class AbstractController extends FOSRestController
     protected function createBadRequestView(FormInterface $form, $data = null)
     {
         $content = new ErrorResponseContent($this->convertFormErrorsToErrorsContent($form), $data);
+        return $this->view($content, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Converts validation violations into an object that can be serialized in HTTP responses.
+     *
+     * @param ConstraintViolationListInterface $violations List of constraints violations.
+     * @return ErrorsContent An instance containing errors that can be serialized in the HTTP response.
+     */
+    protected function violationsToBadRequest(ConstraintViolationListInterface $violations)
+    {
+        $errors = new ErrorsContent();
+        foreach ($violations as $violation) {
+            $errors->fields[$violation->getPropertyPath()][] = $violation->getMessage();
+        }
+
+        $content = new ErrorResponseContent($errors);
         return $this->view($content, Response::HTTP_BAD_REQUEST);
     }
 

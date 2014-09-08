@@ -25,6 +25,9 @@
             <call method="setEntityManagerRegistry">
                 <argument type="service" id="doctrine" />
             </call>
+            <call method="setValidator">
+                <argument type="service" id="validator" />
+            </call>
             <call method="setLogger">
                 <argument type="service" id="logger" />
             </call>

@@ -64,10 +64,10 @@ class ExceptionListener extends BaseExceptionListener
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
-        $this->logger->err($exception->getTraceAsString());
         do {
             if ($exception instanceof AuthenticationException) {
-                return $this->handleAuthenticationException($event, $exception);
+                $this->handleAuthenticationException($event, $exception);
+                return;
             }
             $exception = $exception->getPrevious();
         } while ($exception !== null);

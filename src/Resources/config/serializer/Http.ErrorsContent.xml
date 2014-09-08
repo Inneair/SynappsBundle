@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <serializer>
-    <class name="Inneair\SynappsBundle\Http\ErrorsContent" 
+    <class name="Inneair\SynappsBundle\Http\ErrorsContent">
         <property name="global">
             <type><![CDATA[array<string>]]></type>
         </property>

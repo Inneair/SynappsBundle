@@ -7,6 +7,7 @@ use Inneair\SynappsBundle\Annotation\TransactionalAwareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Abstract base implementation of an Inneair service.
@@ -23,6 +24,11 @@ abstract class AbstractService implements TransactionalAwareInterface
      * @var RegistryInterface
      */
     protected $entityManagerRegistry;
+    /**
+     * Validator component.
+     * @var ValidatorInterface
+     */
+    protected $validator;
     /**
      * Logger
      * @var LoggerInterface
@@ -51,6 +57,18 @@ abstract class AbstractService implements TransactionalAwareInterface
     public function setEntityManagerRegistry(RegistryInterface $entityManagerRegistry)
     {
         $this->entityManagerRegistry = $entityManagerRegistry;
+    }
+
+    /**
+     * Sets the validator component.
+     *
+     * NOTE: this method is automatically invoked by the framework, and should never be called manually.
+     *
+     * @param ValidatorInterface $validator Validator.
+     */
+    public function setValidator(ValidatorInterface $validator)
+    {
+        $this->validator = $validator;
     }
 
     /**
