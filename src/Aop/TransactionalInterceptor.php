@@ -83,8 +83,7 @@ class TransactionalInterceptor implements MethodInterceptorInterface
 
         // Determine if a transaction must be started.
         $transactionRequired = $this->isTransactionRequired(
-            $annotation->policy,
-            $entityManager->getConnection()->isTransactionActive()
+            $annotation->policy, $entityManager->getConnection()->isTransactionActive()
         );
         if ($transactionRequired) {
             // Starts a transaction.
@@ -174,8 +173,7 @@ class TransactionalInterceptor implements MethodInterceptorInterface
         if ($annotation === null) {
             // If there is no method-level annotation, gets class-level annotation.
             $annotation = $this->reader->getClassAnnotation(
-                $method->reflection->getDeclaringClass(),
-                Transactional::class
+                $method->reflection->getDeclaringClass(), Transactional::class
             );
         }
         return $annotation;
