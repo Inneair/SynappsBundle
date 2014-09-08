@@ -12,7 +12,7 @@
         <parameter key="inneair_synapps.object_constructor.class">Inneair\SynappsBundle\Serializer\DefaultObjectConstructor</parameter>
         <parameter key="inneair_synapps.transactional_interceptor.class">Inneair\SynappsBundle\Aop\TransactionalInterceptor</parameter>
         <parameter key="inneair_synapps.transactional_pointcut.class">Inneair\SynappsBundle\Aop\TransactionalPointcut</parameter>
-        <parameter key="inneair_synapps.serializer_visitors.class">Inneair\SynappsBundle\PhpCollection\Map</parameter>
+        <parameter key="inneair_synapps.serializer_visitors.class">PhpCollection\Map</parameter>
     </parameters>
 
     <services>
@@ -69,7 +69,6 @@
         </service>
         <!-- Interceptor for transaction management -->
         <service id="inneair_synapps.transactional_interceptor" class="%inneair_synapps.transactional_interceptor.class%">
-            <argument type="service" id="service_container" />
             <argument type="service" id="doctrine" />
             <argument type="service" id="annotation_reader" />
             <argument type="service" id="logger" />
@@ -83,14 +82,18 @@
         </service>
         <!-- Formats supported for serialization -->
         <service id="inneair_synapps.serialization_visitors" class="%inneair_synapps.serializer_visitors.class%">
-            <argument key="json" type="service" id="jms_serializer.json_serialization_visitor" />
-            <argument key="xml" type="service" id="jms_serializer.xml_serialization_visitor" />
-            <argument key="yaml" type="service" id="jms_serializer.yaml_serialization_visitor" />
+            <argument type="collection">
+                <argument key="json" type="service" id="jms_serializer.json_serialization_visitor" />
+                <argument key="xml" type="service" id="jms_serializer.xml_serialization_visitor" />
+                <argument key="yaml" type="service" id="jms_serializer.yaml_serialization_visitor" />
+            </argument>
         </service>
         <!-- Formats supported for deserialization -->
         <service id="inneair_synapps.deserialization_visitors" class="%inneair_synapps.serializer_visitors.class%">
-            <argument key="json" type="service" id="jms_serializer.json_deserialization_visitor" />
-            <argument key="xml" type="service" id="jms_serializer.xml_deserialization_visitor" />
+            <argument type="collection">
+                <argument key="json" type="service" id="jms_serializer.json_deserialization_visitor" />
+                <argument key="xml" type="service" id="jms_serializer.xml_deserialization_visitor" />
+            </argument>
         </service>
         <!-- JMS serialiser -->
         <service id="inneair_synapps.serializer" class="%jms_serializer.serializer.class%">

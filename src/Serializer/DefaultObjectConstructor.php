@@ -38,7 +38,6 @@ class DefaultObjectConstructor implements ObjectConstructorInterface
     {
         $this->fallbackConstructor = $fallbackConstructor;
         $this->logger = $logger;
-        $this->logger->debug(static::class);
     }
 
     /**
