@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Firewall\ExceptionListener as BaseExceptionL
 use Symfony\Component\Security\Http\HttpUtils;
 
 /**
- * This exception listener catches authentication exceptions, and sends a 401 HTTP code in response. 
+ * This exception listener catches authentication exceptions, and sends a 401 HTTP code in response.
  */
 class ExceptionListener extends BaseExceptionListener
 {
@@ -82,7 +82,8 @@ class ExceptionListener extends BaseExceptionListener
      * @param AuthenticationException $exception Pending authentication exception.
      */
     protected function handleAuthenticationException(
-        GetResponseForExceptionEvent $event, AuthenticationException $exception
+        GetResponseForExceptionEvent $event,
+        AuthenticationException $exception
     )
     {
         if ($this->logger !== null) {
