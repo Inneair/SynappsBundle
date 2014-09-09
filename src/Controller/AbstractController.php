@@ -135,16 +135,67 @@ abstract class AbstractController extends FOSRestController
     protected function createBadRequestView(FormInterface $form, $data = null)
     {
         $content = new ErrorResponseContent($this->convertFormErrorsToErrorsContent($form), $data);
-        return $this->view($content, Response::HTTP_BAD_REQUEST);
+        return $this->getHttpBadRequestView($content);
     }
 
     /**
-     * Converts validation violations into an object that can be serialized in HTTP responses.
+     * Sends a 409 HTTP status code due to a conflict.
+     *
+     * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
+     * @return View The view mapped to a 409 HTTP status code.
+     */
+    protected function getHttpConflictView($data = null)
+    {
+        return $this->view($data, Response::HTTP_CONFLICT);
+    }
+
+    /**
+     * Sends a 404 HTTP status code for a data not found exception.
+     *
+     * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
+     * @return View The view mapped to a 404 HTTP status code.
+     */
+    protected function getHttpNotFoundView($data = null)
+    {
+        return $this->view($data, Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * Sends a 400 HTTP status code for a data not found exception.
+     *
+     * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
+     * @return View The view mapped to a 400 HTTP status code.
+     */
+    protected function getHttpBadRequestView($data = null)
+    {
+        return $this->view($data, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Converts unique constraint exception on a property into a 409 HTTP status code.
+     *
+     * @param string $property Name of the property where a duplicated value was discovered.
+     * @return View The view mapped to a 409 HTTP status code.
+     */
+    protected function uniqueViolationToHttpConflict($property)
+    {
+        $errors = new ErrorsContent();
+        $errors->fields[$property][] = $this->translator->trans(
+            'controller.general.uniquevalueerror',
+            array(),
+            self::CONTROLLER_DOMAIN
+        );
+        $content = new ErrorResponseContent($errors);
+        return $this->view($content, Response::HTTP_CONFLICT);
+    }
+
+    /**
+     * Converts validation violations into a 400 HTTP status code.
      *
      * @param ConstraintViolationListInterface $violations List of constraints violations.
-     * @return ErrorsContent An instance containing errors that can be serialized in the HTTP response.
+     * @return View The view mapped to a 400 HTTP status code.
      */
-    protected function violationsToBadRequest(ConstraintViolationListInterface $violations)
+    protected function violationsToHttpBadRequest(ConstraintViolationListInterface $violations)
     {
         $errors = new ErrorsContent();
         foreach ($violations as $violation) {
@@ -152,7 +203,7 @@ abstract class AbstractController extends FOSRestController
         }
 
         $content = new ErrorResponseContent($errors);
-        return $this->view($content, Response::HTTP_BAD_REQUEST);
+        return $this->getHttpBadRequestView($content);
     }
 
     /**
