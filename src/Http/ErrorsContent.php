@@ -67,6 +67,7 @@ class ErrorsContent
 
     /**
      * {@inheritDoc}
+     * @codeCoverageIgnore
      */
     public function __toString()
     {

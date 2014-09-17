@@ -35,7 +35,8 @@ final class ValidationGroupUtils
     private static $defaultGroupSet = array(self::GROUP_ID, self::GROUP_OTHER_FIELDS);
 
     /**
-     * Empty private constructor to prevent erroneous instanciations.
+     * Prevents unwanted instanciations.
+     * @codeCoverageIgnore
      */
     private function __construct()
     {

@@ -24,7 +24,8 @@ final class SerializerUtils
     const FORMAT_YAML = 'yaml';
 
     /**
-     * Empty private constructor to prevent erroneous instanciations.
+     * Prevents unwanted instanciations.
+     * @codeCoverageIgnore
      */
     private function __construct()
     {

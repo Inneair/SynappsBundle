@@ -35,6 +35,7 @@ class ErrorResponseContent
 
     /**
      * {@inheritDoc}
+     * @codeCoverageIgnore
      */
     public function __toString()
     {
