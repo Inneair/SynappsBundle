@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1ba3f6cd21baca75a4ce11d3fea8f4d3",
+    "hash": "36cf548a04106dd59f170f5b978c789f",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -700,7 +700,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/inneair/synapps",
-                "reference": "3450f3fd795d4787328475e4a354746c214cec8a"
+                "reference": "10b21f64c0abfb15179caa36b28c1e8b7377402f"
             },
             "require": {
                 "php": "5.5.*"
@@ -736,7 +736,7 @@
                 "synapps",
                 "system"
             ],
-            "time": "2014-09-23 13:09:48"
+            "time": "2014-09-23 15:37:20"
         },
         {
             "name": "jms/aop-bundle",
