@@ -1,4 +1,6 @@
 .settings/
+bin/
+docs/
 reports/
 vendor/
 .buildpath
