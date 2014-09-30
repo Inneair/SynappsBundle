@@ -30,7 +30,8 @@ class ValidationException extends RuntimeException
         ConstraintViolationListInterface $violations = null,
         $message = null,
         $code = null,
-        Exception $previous = null)
+        Exception $previous = null
+    )
     {
         parent::__construct($message, $code, $previous);
         $this->violations = $violations;

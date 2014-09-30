@@ -53,8 +53,8 @@ class DefaultEntityRepository extends EntityRepository
         $expressionBuilder = $queryBuilder->expr();
         $queryBuilder->select($expressionBuilder->max($expressionBuilder->substring(
             self::ENTITY_ALIAS . '.' . $property,
-            mb_strlen($prefix) + 1)
-        ));
+            mb_strlen($prefix) + 1
+        )));
         $queryBuilder->where($expressionBuilder->like(
             self::ENTITY_ALIAS . '.' . $property,
             $expressionBuilder->literal(Helper::escapeLikePattern($prefix) . Helper::LIKE_ANY_STRING_WILDCARD)
