@@ -695,7 +695,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/inneair/synapps",
-                "reference": "ba0ea4892fe1f343c02e9f55994eee867fbe0461"
+                "reference": "f31e96f3e93f209c70c9cae5cf47b19add7ea89d"
             },
             "require": {
                 "php": "5.5.*"
@@ -712,8 +712,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Inneair\\Synapps\\": "src/",
-                    "Inneair\\Synapps\\Test\\": "test/"
+                    "Inneair\\Synapps\\": "src/"
                 }
             },
             "license": [
@@ -732,7 +731,7 @@
                 "synapps",
                 "system"
             ],
-            "time": "2014-09-29 15:46:32"
+            "time": "2014-09-30 10:22:22"
         },
         {
             "name": "jms/aop-bundle",
