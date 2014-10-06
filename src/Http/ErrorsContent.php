@@ -56,7 +56,7 @@ class ErrorsContent
      * @param string $fieldName Field name.
      * @param string[] $fieldErrors An array of error messages for this field.
      */
-    protected function mergeFieldErrors($fieldName, array $fieldErrors)
+    public function mergeFieldErrors($fieldName, array $fieldErrors)
     {
         foreach ($fieldErrors as $fieldErrorMessage) {
             if (!in_array($fieldErrorMessage, $this->fields[$fieldName])) {

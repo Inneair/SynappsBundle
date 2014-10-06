@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Inneair\SynappsBundle\Exception\ValidationException;
 
 /**
  * Abstract web controller providing additional services over the FOS REST controller, and the Symfony controller.
@@ -190,16 +191,22 @@ abstract class AbstractController extends FOSRestController
     }
 
     /**
-     * Converts validation violations into a 400 HTTP status code.
+     * Converts validation errors into a 400 HTTP status code.
      *
-     * @param ConstraintViolationListInterface $violations List of constraints violations.
+     * @param ValidationException $exception Validation exception.
      * @return View The view mapped to a 400 HTTP status code.
      */
-    protected function violationsToHttpBadRequest(ConstraintViolationListInterface $violations)
+    protected function validationExceptionToHttpBadRequest(ValidationException $exception)
     {
         $errors = new ErrorsContent();
-        foreach ($violations as $violation) {
-            $errors->fields[$violation->getPropertyPath()][] = $violation->getMessage();
+        $globalErrors = $exception->getGlobalErrors();
+        foreach ($globalErrors as $error) {
+            $errors->global[] = $error;
+        }
+    
+        $fieldErrors = $exception->getFieldErrors();
+        foreach ($fieldErrors as $fieldName => $errors) {
+            $errors->mergeFieldErrors($fieldName, $errors);
         }
 
         $content = new ErrorResponseContent($errors);
