@@ -1,14 +1,14 @@
 <?php
 
-namespace Inneair\Synapps\Test\IO;
+namespace Inneair\SynappsBundle\Test\IO;
 
 use Inneair\SynappsBundle\Exception\ValidationException;
-use Inneair\Synapps\Test\AbstractSynappsTest;
+use Inneair\SynappsBundle\Test\AbstractTest;
 
 /**
- * Class containing test suite for the {@link UniqueConstraintException} exception.
+ * Class containing test suite for the {@link ValidationException} exception.
  */
-class ValidationExceptionTest extends AbstractSynappsTest
+class ValidationExceptionTest extends AbstractTest
 {
     /**
      * An error message.
