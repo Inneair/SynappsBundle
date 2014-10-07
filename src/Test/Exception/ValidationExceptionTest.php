@@ -53,11 +53,12 @@ class ValidationExceptionTest extends AbstractTest
             throw $exception;
         } catch (ValidationException $e) {
             $hasException = true;
-            $fieldErrors = $e->getFieldErrors();
-            $this->assertNotNull($fieldErrors);
-            $this->assertCount(1, $fieldErrors);
-            $this->assertArrayHasKey(self::FIELD_NAME, $fieldErrors);
-            $this->assertEquals(self::ERROR_MESSAGE, $fieldErrors[self::FIELD_NAME]);
+            $allFieldErrors = $e->getFieldErrors();
+            $this->assertNotNull($allFieldErrors);
+            $this->assertCount(1, $allFieldErrors);
+            $this->assertArrayHasKey(self::FIELD_NAME, $allFieldErrors);
+            $this->assertCount(1, $allFieldErrors[self::FIELD_NAME]);
+            $this->assertTrue(in_array(self::ERROR_MESSAGE, $allFieldErrors[self::FIELD_NAME]));
         }
         $this->assertException($hasException);
     }
