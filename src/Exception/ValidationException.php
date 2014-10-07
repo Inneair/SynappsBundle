@@ -52,7 +52,7 @@ class ValidationException extends RuntimeException
      */
     public function addFieldError($fieldName, $errorMessage)
     {
-        $this->fieldErrors[$fieldName] = $errorMessage;
+        $this->fieldErrors[$fieldName][] = $errorMessage;
     }
 
     /**
