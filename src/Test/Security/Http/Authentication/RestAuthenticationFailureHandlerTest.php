@@ -48,5 +48,6 @@ class RestAuthenticationFailureHandlerTest extends AbstractTest
         $response = $this->failureHandler->onAuthenticationFailure($request, new AuthenticationException());
         $this->assertNotNull($response);
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
+        $this->assertEmpty($response->getContent());
     }
 }

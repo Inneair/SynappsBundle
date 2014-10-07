@@ -135,7 +135,7 @@ abstract class AbstractController extends FOSRestController
      */
     protected function createBadRequestView(FormInterface $form, $data = null)
     {
-        $content = new ErrorResponseContent($this->convertFormErrorsToErrorsContent($form), $data);
+        $content = new ErrorResponseContent($this->formErrorsToErrorsContent($form), $data);
         return $this->getHttpBadRequestView($content);
     }
 
@@ -220,7 +220,7 @@ abstract class AbstractController extends FOSRestController
      * @param FormInterface $form The root form.
      * @return ErrorsContent An instance containing errors that can be serialized in the HTTP response.
      */
-    protected function convertFormErrorsToErrorsContent(FormInterface $form)
+    protected function formErrorsToErrorsContent(FormInterface $form)
     {
         $errors = new ErrorsContent();
         $formErrors = $form->getErrors();
@@ -237,7 +237,7 @@ abstract class AbstractController extends FOSRestController
         $children = $form->all();
         foreach ($children as $child) {
             // Merge errors from child with this form errors.
-            $errors->merge($this->convertFormErrorsToErrorsContent($child));
+            $errors->merge($this->formErrorsToErrorsContent($child));
         }
 
         return $errors;

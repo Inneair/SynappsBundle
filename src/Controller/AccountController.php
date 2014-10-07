@@ -17,13 +17,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class AccountController extends AbstractController
 {
     /**
-     * Creates a controller for accounts management with HTTP.
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * Action called to get a content type.
      *
      * @return View|Account An error view, or the account found.
