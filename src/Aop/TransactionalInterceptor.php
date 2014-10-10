@@ -67,7 +67,7 @@ class TransactionalInterceptor implements MethodInterceptorInterface
             if ($annotation === null) {
                 // No annotation found: there is probably a bug in the pointcut class, because the interceptor should
                 // not have been invoked.
-                $this->logger->warn('Transactional interceptor was invoked, but no annotation was found for method \''
+                $this->logger->warning('Transactional interceptor was invoked, but no annotation was found for method \''
                     . $method->reflection->getDeclaringClass()->getName()
                     . '::' . $method->reflection->getName() . '\''
                 );

@@ -26,26 +26,25 @@ class TransactionalPointcut implements PointcutInterface
      */
     private $logger;
     /**
-     * Whether target classes must implement also the
-     * TransactionalAwareInterface interface.
+     * Whether target classes must also implement the {@link TransactionalAwareInterface} interface.
      * @var bool
      */
-    private $strictMode;
+    private $strictModeEnabled;
 
     /**
      * Creates a transactional pointcut.
      *
      * @param Reader $reader An annotations reader.
      * @param LoggerInterface $logger Logger.
-     * @param bool $strictMode Whether target classes must implement also the TransactionalAwareInterface interface
-     * (defaults to <code>false</code>).
+     * @param bool $strictModeEnabled Whether target classes must implement also the TransactionalAwareInterface
+     * interface (defaults to <code>false</code>).
      * @see TransactionalAwareInterface
      */
-    public function __construct(Reader $reader, LoggerInterface $logger, $strictMode = false)
+    public function __construct(Reader $reader, LoggerInterface $logger, $strictModeEnabled = false)
     {
         $this->reader = $reader;
         $this->logger = $logger;
-        $this->strictMode = $strictMode;
+        $this->strictModeEnabled = $strictModeEnabled;
     }
 
     /**
@@ -56,7 +55,7 @@ class TransactionalPointcut implements PointcutInterface
      */
     public function matchesClass(ReflectionClass $class)
     {
-        return ($this->strictMode ? $class->implementsInterface(TransactionalAwareInterface::class) : true);
+        return ($this->strictModeEnabled ? $class->implementsInterface(TransactionalAwareInterface::class) : true);
     }
 
     /**
@@ -66,27 +65,26 @@ class TransactionalPointcut implements PointcutInterface
      */
     public function matchesMethod(ReflectionMethod $method)
     {
-        if (!$method->isPublic()) {
-            return false;
+        $transactionalEnabled = false;
+        if ($method->isPublic()) {
+            // Gets method-level annotation.
+            $annotation = $this->reader->getMethodAnnotation($method, Transactional::class);
+            $transactionalEnabled = ($annotation !== null);
+            if (!$transactionalEnabled) {
+                // If there is no method-level annotation,
+                // gets class-level annotation.
+                $annotation = $this->reader->getClassAnnotation($method->getDeclaringClass(), Transactional::class);
+                $transactionalEnabled = ($annotation !== null);
+            }
+
+            if ($transactionalEnabled) {
+                $this->logger->debug(
+                    'TX mode for \'' . $method->getDeclaringClass()->getName() . '::'
+                        . $method->getName() . '\': ' . (int) $annotation->policy
+                );
+            }
         }
 
-        // Gets method-level annotation.
-        $annotation = $this->reader->getMethodAnnotation($method, Transactional::class);
-        $transactionalSettingEnabled = ($annotation !== null);
-        if (!$transactionalSettingEnabled) {
-            // If there is no method-level annotation,
-            // gets class-level annotation.
-            $annotation = $this->reader->getClassAnnotation($method->getDeclaringClass(), Transactional::class);
-            $transactionalSettingEnabled = ($annotation !== null);
-        }
-
-        if ($transactionalSettingEnabled) {
-            $this->logger->debug(
-                'TX mode for \'' . $method->getDeclaringClass()->getName() . '::'
-                    . $method->getName() . '\': ' . (int) $annotation->policy
-            );
-        }
-
-        return $transactionalSettingEnabled;
+        return $transactionalEnabled;
     }
 }

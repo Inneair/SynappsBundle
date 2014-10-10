@@ -4,18 +4,16 @@ namespace Inneair\SynappsBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
+use Inneair\Synapps\Exception\UniqueConstraintException;
+use Inneair\SynappsBundle\Exception\ValidationException;
 use Inneair\SynappsBundle\Http\ErrorsContent;
 use Inneair\SynappsBundle\Http\ErrorResponseContent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Inneair\SynappsBundle\Exception\ValidationException;
 
 /**
  * Abstract web controller providing additional services over the FOS REST controller, and the Symfony controller.
@@ -77,26 +75,6 @@ abstract class AbstractController extends FOSRestController
     }
 
     /**
-     * Handles a request and validates the underlying form (forces it if the request contains no data).
-     *
-     * @param Request $request HTTP request.
-     * @param FormInterface $form Underlying form.
-     * @return bool <code>true</code> if the form is valid, <code>false</code> otherwise.
-     */
-    protected function validateRequest(Request $request, FormInterface $form)
-    {
-        $form->handleRequest($request);
-        if (!$form->isSubmitted()) {
-            $this->logger->warning(
-                'Missing form parameters, form submission is forced for validation: ['
-                . $request->getMethod() . ' ' . $request->getUri() . ']');
-            $form->submit(null);
-        }
-
-        return $form->isValid();
-    }
-
-    /**
      * Creates and returns a FormInterface instance from the given type.
      *
      * @param string|FormInterface $type The built type of the form (defaults to 'form').
@@ -127,25 +105,12 @@ abstract class AbstractController extends FOSRestController
     }
 
     /**
-     * Creates a view useful to send a HTTP 400 status code to the client, due to bad request format.
-     *
-     * @param FormInterface $form Form containing format errors.
-     * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
-     * @return View The view mapped to a HTTP 400 status code.
-     */
-    protected function createBadRequestView(FormInterface $form, $data = null)
-    {
-        $content = new ErrorResponseContent($this->formErrorsToErrorsContent($form), $data);
-        return $this->getHttpBadRequestView($content);
-    }
-
-    /**
      * Sends a 409 HTTP status code due to a conflict.
      *
      * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
      * @return View The view mapped to a 409 HTTP status code.
      */
-    protected function getHttpConflictView($data = null)
+    protected function createHttpConflictView($data = null)
     {
         return $this->view($data, Response::HTTP_CONFLICT);
     }
@@ -156,7 +121,7 @@ abstract class AbstractController extends FOSRestController
      * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
      * @return View The view mapped to a 404 HTTP status code.
      */
-    protected function getHttpNotFoundView($data = null)
+    protected function createHttpNotFoundView($data = null)
     {
         return $this->view($data, Response::HTTP_NOT_FOUND);
     }
@@ -167,7 +132,7 @@ abstract class AbstractController extends FOSRestController
      * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
      * @return View The view mapped to a 400 HTTP status code.
      */
-    protected function getHttpBadRequestView($data = null)
+    protected function createHttpBadRequestView($data = null)
     {
         return $this->view($data, Response::HTTP_BAD_REQUEST);
     }
@@ -178,10 +143,10 @@ abstract class AbstractController extends FOSRestController
      * @param string $property Name of the property where a duplicated value was discovered.
      * @return View The view mapped to a 409 HTTP status code.
      */
-    protected function uniqueViolationToHttpConflict($property)
+    protected function uniqueViolationToHttpConflictView(UniqueConstraintException $exception)
     {
         $errors = new ErrorsContent();
-        $errors->fields[$property][] = $this->translator->trans(
+        $errors->fields[$exception->getProperty()][] = $this->translator->trans(
             'controller.general.uniquevalueerror',
             array(),
             self::CONTROLLER_DOMAIN
@@ -196,7 +161,7 @@ abstract class AbstractController extends FOSRestController
      * @param ValidationException $exception Validation exception.
      * @return View The view mapped to a 400 HTTP status code.
      */
-    protected function validationExceptionToHttpBadRequest(ValidationException $exception)
+    protected function validationExceptionToHttpBadRequestView(ValidationException $exception)
     {
         $errors = new ErrorsContent();
         $globalErrors = $exception->getGlobalErrors();
@@ -210,36 +175,6 @@ abstract class AbstractController extends FOSRestController
         }
 
         $content = new ErrorResponseContent($errors);
-        return $this->getHttpBadRequestView($content);
-    }
-
-    /**
-     * Extracts all errors from a form and its children, recursively, and converts them into an object that can be
-     * serialized in HTTP responses.
-     *
-     * @param FormInterface $form The root form.
-     * @return ErrorsContent An instance containing errors that can be serialized in the HTTP response.
-     */
-    protected function formErrorsToErrorsContent(FormInterface $form)
-    {
-        $errors = new ErrorsContent();
-        $formErrors = $form->getErrors();
-        foreach ($formErrors as $formError) {
-            if ($formError instanceof FormError) {
-                if (empty($form->getName())) {
-                    $errors->global[] = $formError->getMessage();
-                } else {
-                    $errors->fields[$form->getName()][] = $formError->getMessage();
-                }
-            }
-        }
-
-        $children = $form->all();
-        foreach ($children as $child) {
-            // Merge errors from child with this form errors.
-            $errors->merge($this->formErrorsToErrorsContent($child));
-        }
-
-        return $errors;
+        return $this->createHttpBadRequestView($content);
     }
 }
