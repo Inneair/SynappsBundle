@@ -105,6 +105,17 @@ abstract class AbstractController extends FOSRestController
     }
 
     /**
+     * Sends a 400 HTTP status code for a data not found exception.
+     *
+     * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
+     * @return View The view mapped to a 400 HTTP status code.
+     */
+    protected function createHttpBadRequestView($data = null)
+    {
+        return $this->view($data, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
      * Sends a 409 HTTP status code due to a conflict.
      *
      * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
@@ -127,29 +138,21 @@ abstract class AbstractController extends FOSRestController
     }
 
     /**
-     * Sends a 400 HTTP status code for a data not found exception.
-     *
-     * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
-     * @return View The view mapped to a 400 HTTP status code.
-     */
-    protected function createHttpBadRequestView($data = null)
-    {
-        return $this->view($data, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
      * Converts unique constraint exception on a property into a 409 HTTP status code.
      *
-     * @param string $property Name of the property where a duplicated value was discovered.
+     * @param UniqueConstraintException $exception The exception that caused a unique constraint violation.
      * @return View The view mapped to a 409 HTTP status code.
      */
     protected function uniqueViolationToHttpConflictView(UniqueConstraintException $exception)
     {
         $errors = new ErrorsContent();
-        $errors->fields[$exception->getProperty()][] = $this->translator->trans(
-            'controller.general.uniquevalueerror',
-            array(),
-            self::CONTROLLER_DOMAIN
+        $errors->mergeFieldErrors(
+            $exception->getProperty(),
+            array($this->translator->trans(
+                'controller.general.uniquevalueerror',
+                array(),
+                self::CONTROLLER_DOMAIN
+            ))
         );
         $content = new ErrorResponseContent($errors);
         return $this->view($content, Response::HTTP_CONFLICT);
@@ -163,11 +166,7 @@ abstract class AbstractController extends FOSRestController
      */
     protected function validationExceptionToHttpBadRequestView(ValidationException $exception)
     {
-        $errors = new ErrorsContent();
-        $globalErrors = $exception->getGlobalErrors();
-        foreach ($globalErrors as $error) {
-            $errors->global[] = $error;
-        }
+        $errors = new ErrorsContent($exception->getGlobalErrors());
 
         $allFieldErrors = $exception->getFieldErrors();
         foreach ($allFieldErrors as $fieldName => $fieldErrors) {

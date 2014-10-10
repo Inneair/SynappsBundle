@@ -14,13 +14,45 @@ class ErrorsContent
      * An array of global error messages.
      * @var string[]
      */
-    public $global;
+    private $globalErrors;
     /**
-     * An array of fields errors, whose keys are fields names, and values are
-     * arrays of error messages.
+     * An array of fields errors, whose keys are fields names, and values are arrays of error messages.
      * @var array
      */
-    public $fields;
+    private $fieldsErrors;
+
+    /**
+     * Creates a content for errors.
+     *
+     * @param string[] $globalErrors Array of global error messages.
+     * @param array $fieldsErrors Array of fields errors, whose keys are fields names, and values are arrays of error
+     * messages.
+     */
+    public function __construct(array $globalErrors = array(), array $fieldsErrors = array())
+    {
+        $this->globalErrors = $globalErrors;
+        $this->fieldsErrors = $fieldsErrors;
+    }
+
+    /**
+     * Gets errors for all fields.
+     *
+     * @return array An array of fields errors, whose keys are fields names, and values are arrays of error messages.
+     */
+    public function getFieldsErrors()
+    {
+        return $this->fieldsErrors;
+    }
+
+    /**
+     * Gets the global errors.
+     *
+     * @return string[] An array of global error messages.
+     */
+    public function getGlobalErrors()
+    {
+        return $this->globalErrors;
+    }
 
     /**
      * Merges errors from another instance into this instance.
@@ -29,22 +61,22 @@ class ErrorsContent
      */
     public function merge(ErrorsContent $errors)
     {
-        if ($errors->global !== null) {
+        if ($errors->globalErrors !== null) {
             // Merge global errors.
-            foreach ($errors->global as $errorMessage) {
-                if (!in_array($errorMessage, $this->global)) {
-                    $this->global[] = $errorMessage;
+            foreach ($errors->globalErrors as $errorMessage) {
+                if (!in_array($errorMessage, $this->globalErrors)) {
+                    $this->globalErrors[] = $errorMessage;
                 }
             }
         }
 
-        if ($errors->fields !== null) {
+        if ($errors->fieldsErrors !== null) {
             // Merge fields errors.
-            foreach ($errors->fields as $fieldName => $fieldErrors) {
-                if (isset($this->fields[$fieldName])) {
+            foreach ($errors->fieldsErrors as $fieldName => $fieldErrors) {
+                if (isset($this->fieldsErrors[$fieldName])) {
                     $this->mergeFieldErrors($fieldName, $fieldErrors);
                 } else {
-                    $this->fields[$fieldName] = $errors->fields[$fieldName];
+                    $this->fieldsErrors[$fieldName] = $errors->fieldsErrors[$fieldName];
                 }
             }
         }
@@ -59,8 +91,9 @@ class ErrorsContent
     public function mergeFieldErrors($fieldName, array $fieldErrors)
     {
         foreach ($fieldErrors as $fieldErrorMessage) {
-            if (!in_array($fieldErrorMessage, $this->fields[$fieldName])) {
-                $this->fields[$fieldName][] = $fieldErrorMessage;
+            if (!isset($this->fieldsErrors[$fieldName])
+                || !in_array($fieldErrorMessage, $this->fieldsErrors[$fieldName])) {
+                $this->fieldsErrors[$fieldName][] = $fieldErrorMessage;
             }
         }
     }
@@ -72,7 +105,7 @@ class ErrorsContent
     public function __toString()
     {
         return 'ErrorsContent {global='
-            . StringUtils::defaultString($this->global) . ', fields='
-            . StringUtils::defaultString($this->fields) . '}';
+            . StringUtils::defaultString($this->globalErrors) . ', fields='
+            . StringUtils::defaultString($this->fieldsErrors) . '}';
     }
 }

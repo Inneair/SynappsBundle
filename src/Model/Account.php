@@ -1,6 +1,6 @@
 <?php
 
-namespace Inneair\SynappsBundle\Entity;
+namespace Inneair\SynappsBundle\Model;
 
 use FOS\UserBundle\Entity\User;
 
