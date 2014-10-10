@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <serializer>
     <class name="Inneair\SynappsBundle\Http\ErrorsContent">
-        <property name="global">
+        <property name="globalErrors" serialized-name="globalErrors">
             <type><![CDATA[array<string>]]></type>
         </property>
-        <property name="fields">
+        <property name="fieldsErrors" serialized-name="fieldsErrors">
             <type><![CDATA[array<string,array<string>>]]></type>
         </property>
     </class>
