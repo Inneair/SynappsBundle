@@ -6,7 +6,7 @@ use FOS\RestBundle\Controller\Annotations\View as RestView;
 use FOS\RestBundle\View\View;
 use FOS\UserBundle\Model\UserInterface;
 use Inneair\SynappsBundle\Controller\AbstractController;
-use Inneair\SynappsBundle\Entity\Account;
+use Inneair\SynappsBundle\Model\Account;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
