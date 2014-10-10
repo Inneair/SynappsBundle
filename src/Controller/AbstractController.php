@@ -169,9 +169,9 @@ abstract class AbstractController extends FOSRestController
             $errors->global[] = $error;
         }
 
-        $fieldErrors = $exception->getFieldErrors();
-        foreach ($fieldErrors as $fieldName => $errors) {
-            $errors->mergeFieldErrors($fieldName, $errors);
+        $allFieldErrors = $exception->getFieldErrors();
+        foreach ($allFieldErrors as $fieldName => $fieldErrors) {
+            $errors->mergeFieldErrors($fieldName, $fieldErrors);
         }
 
         $content = new ErrorResponseContent($errors);
