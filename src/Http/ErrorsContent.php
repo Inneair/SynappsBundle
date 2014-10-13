@@ -35,6 +35,21 @@ class ErrorsContent
     }
 
     /**
+     * Gets errors for a given fields.
+     *
+     * @param string $fieldName Field name.
+     * @return string[] An array of error messages, or <code>null</code> if there are no errors for this field.
+     */
+    public function getFieldErrors($fieldName)
+    {
+        $fieldErrors = null;
+        if (isset($this->fieldsErrors[$fieldName])) {
+            $fieldErrors = $this->fieldsErrors[$fieldName];
+        }
+        return $fieldErrors;
+    }
+
+    /**
      * Gets errors for all fields.
      *
      * @return array An array of fields errors, whose keys are fields names, and values are arrays of error messages.
@@ -73,11 +88,7 @@ class ErrorsContent
         if ($errors->fieldsErrors !== null) {
             // Merge fields errors.
             foreach ($errors->fieldsErrors as $fieldName => $fieldErrors) {
-                if (isset($this->fieldsErrors[$fieldName])) {
-                    $this->mergeFieldErrors($fieldName, $fieldErrors);
-                } else {
-                    $this->fieldsErrors[$fieldName] = $errors->fieldsErrors[$fieldName];
-                }
+                $this->mergeFieldErrors($fieldName, $fieldErrors);
             }
         }
     }
