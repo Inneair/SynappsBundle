@@ -473,16 +473,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "v2.4.5",
+            "version": "v2.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "c0d3cdbdfbf873871167050ab077e49b1ad02ab0"
+                "reference": "bebacf79d8d4dae9168f0f9bc6811e6c2cb6a4d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/c0d3cdbdfbf873871167050ab077e49b1ad02ab0",
-                "reference": "c0d3cdbdfbf873871167050ab077e49b1ad02ab0",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/bebacf79d8d4dae9168f0f9bc6811e6c2cb6a4d9",
+                "reference": "bebacf79d8d4dae9168f0f9bc6811e6c2cb6a4d9",
                 "shasum": ""
             },
             "require": {
@@ -542,7 +542,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2014-09-22 21:58:51"
+            "time": "2014-10-06 13:22:50"
         },
         {
             "name": "friendsofsymfony/rest-bundle",
@@ -695,7 +695,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/inneair/synapps",
-                "reference": "620b9350f0f18d0714844ca5513ae3132b216886"
+                "reference": "f8b635b0905de5590e9327f2d526c1c5d2765eb7"
             },
             "require": {
                 "php": "5.5.*"
@@ -731,7 +731,7 @@
                 "synapps",
                 "system"
             ],
-            "time": "2014-10-06 09:08:10"
+            "time": "2014-10-13 12:16:52"
         },
         {
             "name": "jms/aop-bundle",
@@ -1407,16 +1407,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.16.0",
+            "version": "v1.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "8ce37115802e257a984a82d38254884085060024"
+                "reference": "7c4c01dcf578523cfcddf383641a4f12790270ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/8ce37115802e257a984a82d38254884085060024",
-                "reference": "8ce37115802e257a984a82d38254884085060024",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/7c4c01dcf578523cfcddf383641a4f12790270ec",
+                "reference": "7c4c01dcf578523cfcddf383641a4f12790270ec",
                 "shasum": ""
             },
             "require": {
@@ -1460,7 +1460,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-07-05 12:19:05"
+            "time": "2014-10-10 14:09:53"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -3180,28 +3180,28 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "10c7467da0622f7848cc5cadc0828c3359254df4"
+                "reference": "6288ebbf6fa3ed2b2ff2d69c356fbaaf4f0971a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/10c7467da0622f7848cc5cadc0828c3359254df4",
-                "reference": "10c7467da0622f7848cc5cadc0828c3359254df4",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/6288ebbf6fa3ed2b2ff2d69c356fbaaf4f0971a7",
+                "reference": "6288ebbf6fa3ed2b2ff2d69c356fbaaf4f0971a7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "~4.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -3226,7 +3226,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2014-05-04 17:56:05"
+            "time": "2014-10-07 09:23:16"
         },
         {
             "name": "sebastian/exporter",

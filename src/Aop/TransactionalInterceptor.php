@@ -73,51 +73,92 @@ class TransactionalInterceptor implements MethodInterceptorInterface
                         . '\''
                 );
             }
-
-            return $result = $method->proceed();
         }
 
         // Gets the entity manager.
-        $invokingService = $method->reflection->getDeclaringClass();
         /** @var EntityManager $entityManager */
         $entityManager = $this->entityManagerRegistry->getManager();
 
-        // Determine if a transaction must be started.
-        $transactionRequired = $this->isTransactionRequired(
-            $annotation->policy,
-            $entityManager->getConnection()->isTransactionActive()
-        );
+        $transactionRequired = false;
+        if ($annotation !== null) {
+            // Determine if a transaction must be started.
+            $transactionRequired = $this->isTransactionRequired(
+                $annotation->policy,
+                $entityManager->getConnection()->isTransactionActive()
+            );
+        }
+
+        $this->beforeMethodInvocation($transactionRequired, $entityManager);
+        try {
+            // Invokes the method.
+            $this->logger->debug(
+                $method->reflection->getDeclaringClass()->getName() . '::' . $method->reflection->getName()
+            );
+            $result = $method->proceed();
+            $this->afterMethodInvocationSuccessful($transactionRequired, $entityManager);
+        } catch (Exception $e) {
+            // Manage special exceptions (commit or rollback strategy).
+            $noRollbackExceptions = ($annotation === null) ? null : $annotation->noRollbackExceptions;
+            $this->afterMethodInvocationFailure($transactionRequired, $entityManager, $e, $noRollbackExceptions);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Performs additional process after the intercepted method call was performed with a failure.
+     *
+     * @param bool $transactionRequired If a new transaction was required.
+     * @param EntityManager $entityManager Entity manager
+     * @param string[] $noRollbackExceptions An array of exceptions that shall not lead to a transaction rollback.
+     */
+    protected function afterMethodInvocationFailure(
+        $transactionRequired,
+        EntityManager $entityManager,
+        Exception $e,
+        array $noRollbackExceptions = null
+    )
+    {
+        if ($transactionRequired) {
+            if (!empty($noRollbackExceptions) && in_array(get_class($e), $noRollbackExceptions)) {
+                // Commits the transaction.
+                $this->logger->debug('No rollback for exception ' . get_class($e));
+                $this->commit($entityManager);
+            } else {
+                // Rollbacks the transaction.
+                $this->logger->debug('Exception ' . get_class($e) . ' causes rollback');
+                $this->rollback($entityManager);
+            }
+        }
+
+        throw $e;
+    }
+
+    /**
+     * Performs additional process after the intercepted method call was performed successfully.
+     *
+     * @param bool $transactionRequired If a new transaction was required.
+     * @param EntityManager $entityManager Entity manager
+     */
+    protected function afterMethodInvocationSuccessful($transactionRequired, EntityManager $entityManager)
+    {
+        if ($transactionRequired) {
+            // Commits the transaction.
+            $this->commit($entityManager);
+        }
+    }
+
+    /**
+     * Performs additional process before the intercepted method call is performed.
+     *
+     * @param bool $transactionRequired If a new transaction is required.
+     * @param EntityManager $entityManager Entity manager
+     */
+    protected function beforeMethodInvocation($transactionRequired, EntityManager $entityManager)
+    {
         if ($transactionRequired) {
             // Starts a transaction.
             $this->beginTransaction($entityManager);
-        }
-        try {
-            // Invokes the method.
-            $this->logger->debug($invokingService->getName() . '::' . $method->reflection->getName());
-            $result = $method->proceed();
-
-            if ($transactionRequired) {
-                // Commits the transaction.
-                $this->commit($entityManager);
-            }
-
-            return $result;
-        } catch (Exception $e) {
-            // Manage special exceptions (commit or rollback strategy).
-            if ($transactionRequired) {
-                $noRollbackExceptions = ($annotation === null) ? null : $annotation->noRollbackExceptions;
-                if (!empty($noRollbackExceptions) && in_array(get_class($e), $noRollbackExceptions)) {
-                    // Commits the transaction.
-                    $this->logger->debug('No rollback for exception ' . get_class($e));
-                    $this->commit($entityManager);
-                } else {
-                    // Rollbacks the transaction.
-                    $this->logger->debug('Exception ' . get_class($e) . ' causes rollback');
-                    $this->rollback($entityManager);
-                }
-            }
-
-            throw $e;
         }
     }
 

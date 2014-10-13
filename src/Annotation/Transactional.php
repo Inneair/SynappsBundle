@@ -48,7 +48,7 @@ class Transactional
     public $policy = self::REQUIRED;
     /**
      * An array of exceptions that will not lead to a transaction rollback, if thrown during the method execution.
-     * @var array
+     * @var string[]
      */
     public $noRollbackExceptions = array(DataNotFoundException::class);
 }
