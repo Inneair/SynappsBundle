@@ -2,6 +2,8 @@
 
 namespace Inneair\SynappsBundle\Validator\Constraints;
 
+use Inneair\Synapps\Util\StringUtils;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
@@ -30,16 +32,23 @@ class HttpRequestParametersValidator extends ConstraintValidator
 
     /**
      * {@inheritDoc}
+     *
+     * @throws RuntimeException If the given constraint is not a {@link HttpRequestParameters} instance.
      */
     public function validate($value, Constraint $constraint)
     {
-        $requestParameters = $this->request->request->all();
-        $missingParameters = array_diff($constraint->requiredParameters, array_keys($requestParameters));
-        if (!empty($missingParameters)) {
-            $this->context->addViolation(
-                $constraint->requiredParametersMessage,
-                array('{{ parameters }}' => implode(', ', $missingParameters))
-            );
+        if ($constraint instanceof HttpRequestParameters) {
+            $requestParameters = $this->request->request->all();
+            $missingParameters = array_diff($constraint->requiredParameters, array_keys($requestParameters));
+            if (!empty($missingParameters)) {
+                $this->context->addViolation(
+                    $constraint->requiredParametersMessage,
+                    array('{{ parameters }}' => implode(StringUtils::ARRAY_VALUES_SEPARATOR, $missingParameters))
+                );
+            }
+        } else {
+            throw new RuntimeException('Invalid constraint: ' . HttpRequestParameters::class
+                . ' instance expected, ' . get_class($constraint) . ' provided');
         }
     }
 }

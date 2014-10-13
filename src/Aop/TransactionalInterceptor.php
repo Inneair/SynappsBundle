@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Exception;
 use Inneair\SynappsBundle\Annotation\Transactional;
 use Psr\Log\LoggerInterface;
+use ReflectionMethod;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -56,23 +57,22 @@ class TransactionalInterceptor implements MethodInterceptorInterface
      */
     public function intercept(MethodInvocation $method)
     {
+        $methodDefinition = $method->reflection;
+
         // Gets the @Transactional annotation, if existing.
-        $annotation = $this->getTransactionalAnnotation($method);
+        $annotation = $this->getTransactionalAnnotation($methodDefinition);
 
         // The transactional policy is determined by the annotation, if found.
         // If missing, default behaviour is to do nothing (no transaction started).
         $policy = ($annotation === null) ? Transactional::NOT_REQUIRED : $annotation->policy;
-        if ($policy === Transactional::NOT_REQUIRED) {
-            // No transaction context is required, so we just invoke the target method.
-            if ($annotation === null) {
-                // No annotation found: there is probably a bug in the pointcut class, because the interceptor should
-                // not have been invoked.
-                $this->logger->warning(
-                    'Transactional interceptor was invoked, but no annotation was found for method \''
-                        . $method->reflection->getDeclaringClass()->getName() . '::' . $method->reflection->getName()
-                        . '\''
-                );
-            }
+        if (($policy === Transactional::NOT_REQUIRED) && ($annotation === null)) {
+            // No annotation found: there is probably a bug in the pointcut class, because the interceptor should not
+            // have been invoked.
+            $this->logger->warning(
+                'Transactional interceptor was invoked, but no annotation was found for method \''
+                    . $methodDefinition->getDeclaringClass()->getName() . '::' . $methodDefinition->getName()
+                    . '\''
+            );
         }
 
         // Gets the entity manager.
@@ -92,10 +92,10 @@ class TransactionalInterceptor implements MethodInterceptorInterface
         try {
             // Invokes the method.
             $this->logger->debug(
-                $method->reflection->getDeclaringClass()->getName() . '::' . $method->reflection->getName()
+                $methodDefinition->getDeclaringClass()->getName() . '::' . $methodDefinition->getName()
             );
             $result = $method->proceed();
-            $this->afterMethodInvocationSuccessful($transactionRequired, $entityManager);
+            $this->afterMethodInvocationSuccess($transactionRequired, $entityManager);
         } catch (Exception $e) {
             // Manage special exceptions (commit or rollback strategy).
             $noRollbackExceptions = ($annotation === null) ? null : $annotation->noRollbackExceptions;
@@ -140,7 +140,7 @@ class TransactionalInterceptor implements MethodInterceptorInterface
      * @param bool $transactionRequired If a new transaction was required.
      * @param EntityManager $entityManager Entity manager
      */
-    protected function afterMethodInvocationSuccessful($transactionRequired, EntityManager $entityManager)
+    protected function afterMethodInvocationSuccess($transactionRequired, EntityManager $entityManager)
     {
         if ($transactionRequired) {
             // Commits the transaction.
@@ -207,18 +207,15 @@ class TransactionalInterceptor implements MethodInterceptorInterface
     /**
      * Gets the @Transactional annotation, if any, looking at method level as a priority, then at class level.
      *
-     * @param MethodInvocation $method Current method invocation.
+     * @param ReflectionMethod $method Method definition.
      * @return Transactional The transaction annotation, or <code>null</code> if not found.
      */
-    protected function getTransactionalAnnotation(MethodInvocation $method)
+    protected function getTransactionalAnnotation(ReflectionMethod $method)
     {
-        $annotation = $this->reader->getMethodAnnotation($method->reflection, Transactional::class);
+        $annotation = $this->reader->getMethodAnnotation($method, Transactional::class);
         if ($annotation === null) {
             // If there is no method-level annotation, gets class-level annotation.
-            $annotation = $this->reader->getClassAnnotation(
-                $method->reflection->getDeclaringClass(),
-                Transactional::class
-            );
+            $annotation = $this->reader->getClassAnnotation($method->getDeclaringClass(), Transactional::class);
         }
         return $annotation;
     }
