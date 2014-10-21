@@ -2,9 +2,10 @@
 
 namespace Inneair\SynappsBundle\Test\Controller\Fixture;
 
+use Exception;
+use Inneair\Synapps\Exception\UniqueConstraintException;
 use Inneair\SynappsBundle\Controller\AbstractController;
 use Inneair\SynappsBundle\Exception\ValidationException;
-use Inneair\Synapps\Exception\UniqueConstraintException;
 
 /**
  * A test implementation of base controller that allows to test protected/private utilities.
@@ -56,13 +57,13 @@ class ConcreteController extends AbstractController
     }
 
     /**
-     * A method that gives access to the {@link AbstractController#validationExceptionToHttpBadRequestView} method.
+     * A method that gives access to the {@link AbstractController#exceptionToHttpBadRequestView} method.
      *
      * @param ValidationException $exception Validation exception.
      * @return View The view mapped to a 400 HTTP status code.
      */
-    public function validationExceptionToHttpBadRequestViewInternal(ValidationException $exception)
+    public function exceptionToHttpBadRequestViewInternal(Exception $exception)
     {
-        return $this->validationExceptionToHttpBadRequestView($exception);
+        return $this->exceptionToHttpBadRequestView($exception);
     }
 }

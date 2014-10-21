@@ -35,6 +35,18 @@ class ErrorsContent
     }
 
     /**
+     * Adds global errors to this content.
+     *
+     * The method removes duplicated messages.
+     *
+     * @param string[] $globalErrors Array of global error messages.
+     */
+    public function addGlobalErrors(array $globalErrors)
+    {
+        $this->globalErrors = array_unique(array_merge($this->globalErrors, $globalErrors));
+    }
+
+    /**
      * Gets errors for a given fields.
      *
      * @param string $fieldName Field name.

@@ -32,6 +32,21 @@ class ErrorContentTest extends AbstractTest
     const ERROR_MESSAGE_2 = 'error2';
 
     /**
+     * Add global errors into a content with a new error and a duplicated error.
+     */
+    public function testAddGlobalErrors()
+    {
+        $content = new ErrorsContent(array(self::ERROR_MESSAGE_1));
+        $content->addGlobalErrors(array(self::ERROR_MESSAGE_1, self::ERROR_MESSAGE_2));
+        $this->assertCount(2, $content->getGlobalErrors());
+        $globalErrors = $content->getGlobalErrors();
+        $this->assertTrue(is_array($globalErrors));
+        $this->assertCount(2, $globalErrors);
+        $this->assertContains(self::ERROR_MESSAGE_1, $globalErrors);
+        $this->assertContains(self::ERROR_MESSAGE_2, $globalErrors);
+    }
+
+    /**
      * Merge errors from two contents with duplicated global errors and field errors.
      */
     public function testMerge()

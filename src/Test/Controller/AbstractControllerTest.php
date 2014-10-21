@@ -2,11 +2,12 @@
 
 namespace Inneair\SynappsBundle\Test\Controller;
 
-use Inneair\SynappsBundle\Test\Controller\Fixture\ConcreteController;
-use Inneair\SynappsBundle\Exception\ValidationException;
-use Symfony\Component\HttpFoundation\Response;
-use Inneair\SynappsBundle\Http\ErrorResponseContent;
+use Exception;
 use Inneair\Synapps\Exception\UniqueConstraintException;
+use Inneair\SynappsBundle\Exception\ValidationException;
+use Inneair\SynappsBundle\Http\ErrorResponseContent;
+use Inneair\SynappsBundle\Test\Controller\Fixture\ConcreteController;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class containing tests for the abstract controller.
@@ -107,6 +108,30 @@ class AbstractControllerTest extends AbstractUnitTest
     }
 
     /**
+     * Converts a non-validation exception into a HTTP response with status code 400.
+     */
+    public function testExceptionToHttpBadRequestView()
+    {
+        $exception = new Exception(self::ERROR_MESSAGE);
+        $view = $this->controller->exceptionToHttpBadRequestViewInternal($exception);
+    
+        $this->assertNotNull($view);
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $view->getStatusCode());
+        $data = $view->getData();
+        $this->assertTrue($data instanceof ErrorResponseContent);
+        $this->assertNotNull($data->errors);
+    
+        $globalErrors = $data->errors->getGlobalErrors();
+        $this->assertTrue(is_array($globalErrors));
+        $this->assertCount(1, $globalErrors);
+        $this->assertEquals($exception->getMessage(), $globalErrors[0]);
+    
+        $fieldsErrors = $data->errors->getFieldsErrors();
+        $this->assertTrue(is_array($fieldsErrors));
+        $this->assertCount(0, $fieldsErrors);
+    }
+
+    /**
      * Converts a validation exception into a HTTP response with status code 400.
      */
     public function testValidationExceptionToHttpBadRequestView()
@@ -115,7 +140,7 @@ class AbstractControllerTest extends AbstractUnitTest
             array(self::ERROR_MESSAGE),
             array(self::FIELD_NAME => array(self::ERROR_MESSAGE))
         );
-        $view = $this->controller->validationExceptionToHttpBadRequestViewInternal($exception);
+        $view = $this->controller->exceptionToHttpBadRequestViewInternal($exception);
 
         $this->assertNotNull($view);
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $view->getStatusCode());

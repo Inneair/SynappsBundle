@@ -2,6 +2,7 @@
 
 namespace Inneair\SynappsBundle\Controller;
 
+use Exception;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Inneair\Synapps\Exception\UniqueConstraintException;
@@ -159,18 +160,25 @@ abstract class AbstractController extends FOSRestController
     }
 
     /**
-     * Converts validation errors into a 400 HTTP status code.
+     * Converts exceptions into a 400 HTTP status code.
      *
-     * @param ValidationException $exception Validation exception.
+     * If the exception is a {@link ValidationException}, a special behaviour allows to keep field-related violations
+     * intact.
+     *
+     * @param Exception $exception An exception.
      * @return View The view mapped to a 400 HTTP status code.
      */
-    protected function validationExceptionToHttpBadRequestView(ValidationException $exception)
+    protected function exceptionToHttpBadRequestView(Exception $exception)
     {
-        $errors = new ErrorsContent($exception->getGlobalErrors());
-
-        $allFieldErrors = $exception->getFieldErrors();
-        foreach ($allFieldErrors as $fieldName => $fieldErrors) {
-            $errors->mergeFieldErrors($fieldName, $fieldErrors);
+        $errors = new ErrorsContent();
+        if ($exception instanceof ValidationException) {
+            $errors->addGlobalErrors($exception->getGlobalErrors());
+            $allFieldErrors = $exception->getFieldErrors();
+            foreach ($allFieldErrors as $fieldName => $fieldErrors) {
+                $errors->mergeFieldErrors($fieldName, $fieldErrors);
+            }
+        } else {
+            $errors->addGlobalErrors(array($exception->getMessage()));
         }
 
         $content = new ErrorResponseContent($errors);
