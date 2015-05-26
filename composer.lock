@@ -763,7 +763,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/inneair/synapps",
-                "reference": "0b73eab87e782b38e6adab1d8a2ec832048ff847"
+                "reference": "b9c6cd3e327a683fe9d2ee4a68b7131cf97b27ed"
             },
             "require": {
                 "php": "~5.3"
@@ -800,7 +800,7 @@
                 "synapps",
                 "system"
             ],
-            "time": "2015-05-25 20:45:03"
+            "time": "2015-05-26 08:55:12"
         },
         {
             "name": "jms/aop-bundle",
