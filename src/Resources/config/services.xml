@@ -21,7 +21,7 @@
         <!-- Inneair data layer -->
         <!-- Base repository -->
         <service id="inneair_synapps.defaultentityrepository" class="%inneair_synapps.defaultentityrepository.class%" abstract="true">
-            <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
+            <factory service="doctrine" method="getRepository" />
         </service>
 
         <!-- Inneair business services -->
