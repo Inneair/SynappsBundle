@@ -4,9 +4,11 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="inneair_synapps.abstractcontroller.class">Inneair\SynappsBundle\Controller\AbstractController</parameter>
+        <parameter key="inneair_synapps.abstracthttpcontroller.class">Inneair\SynappsBundle\Controller\AbstractHttpController</parameter>
+        <parameter key="inneair_synapps.abstractrestcontroller.class">Inneair\SynappsBundle\Controller\AbstractRestController</parameter>
         <parameter key="inneair_synapps.abstractservice.class">Inneair\SynappsBundle\Service\AbstractService</parameter>
         <parameter key="inneair_synapps.accountcontroller.class">Inneair\SynappsBundle\Controller\AccountController</parameter>
+        <parameter key="inneair_synapps.defaultentityrepository.class">Inneair\SynappsBundle\Entity\DefaultEntityRepository</parameter>
         <parameter key="inneair_synapps.httprequestvalidator.class">Inneair\SynappsBundle\Validator\Constraints\HttpRequestParametersValidator</parameter>
         <parameter key="inneair_synapps.notinvalidator.class">Inneair\SynappsBundle\Validator\Constraints\NotInValidator</parameter>
         <parameter key="inneair_synapps.object_constructor.class">Inneair\SynappsBundle\Serializer\DefaultObjectConstructor</parameter>
@@ -16,6 +18,13 @@
     </parameters>
 
     <services>
+        <!-- Inneair data layer -->
+        <!-- Base repository -->
+        <service id="inneair_synapps.defaultentityrepository" class="%inneair_synapps.defaultentityrepository.class%" abstract="true">
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
+        </service>
+
+        <!-- Inneair business services -->
         <!-- Inneair Synapps services -->
         <!-- Core abstract service -->
         <service id="inneair_synapps.abstractservice" class="%inneair_synapps.abstractservice.class%" abstract="true">
@@ -35,8 +44,21 @@
         </service>
 
         <!-- Inneair web controllers -->
-        <!-- Core abstract controller -->
-        <service id="inneair_synapps.abstractcontroller" class="%inneair_synapps.abstractcontroller.class%" abstract="true">
+        <!-- Abstract HTTP controller -->
+        <service id="inneair_synapps.abstracthttpcontroller" class="%inneair_synapps.abstracthttpcontroller.class%" abstract="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+            <call method="setTranslator">
+                <argument type="service" id="translator" />
+            </call>
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
+            <call method="init" />
+        </service>
+        <!-- Abstract REST controller -->
+        <service id="inneair_synapps.abstractrestcontroller" class="%inneair_synapps.abstractrestcontroller.class%" abstract="true">
             <call method="setContainer">
                 <argument type="service" id="service_container" />
             </call>
@@ -49,7 +71,7 @@
             <call method="init" />
         </service>
         <!-- Account management controller -->
-        <service id="inneair_synapps.accountcontroller" class="%inneair_synapps.accountcontroller.class%" parent="inneair_synapps.abstractcontroller" />
+        <service id="inneair_synapps.accountcontroller" class="%inneair_synapps.accountcontroller.class%" parent="inneair_synapps.abstractrestcontroller" />
 
         <!-- Inneair validators -->
         <!-- HTTP request validator -->

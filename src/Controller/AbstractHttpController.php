@@ -3,13 +3,12 @@
 namespace Inneair\SynappsBundle\Controller;
 
 use Exception;
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\View\View;
 use Inneair\Synapps\Exception\UniqueConstraintException;
 use Inneair\SynappsBundle\Exception\ValidationException;
 use Inneair\SynappsBundle\Http\ErrorsContent;
 use Inneair\SynappsBundle\Http\ErrorResponseContent;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,9 +16,9 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Abstract web controller providing additional services over the FOS REST controller, and the Symfony controller.
+ * Abstract web controller providing additional services over the Symfony controller.
  */
-abstract class AbstractController extends FOSRestController
+abstract class AbstractHttpController extends Controller
 {
     /**
      * Domain name for translations.
@@ -103,85 +102,5 @@ abstract class AbstractController extends FOSRestController
     public function createNamedBuilder($type = 'form', $data = null, array $options = array(), $name = null)
     {
         return $this->container->get('form.factory')->createNamedBuilder($name, $type, $data, $options);
-    }
-
-    /**
-     * Sends a 400 HTTP status code for a data not found exception.
-     *
-     * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
-     * @return View The view mapped to a 400 HTTP status code.
-     */
-    protected function createHttpBadRequestView($data = null)
-    {
-        return $this->view($data, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
-     * Sends a 409 HTTP status code due to a conflict.
-     *
-     * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
-     * @return View The view mapped to a 409 HTTP status code.
-     */
-    protected function createHttpConflictView($data = null)
-    {
-        return $this->view($data, Response::HTTP_CONFLICT);
-    }
-
-    /**
-     * Sends a 404 HTTP status code for a data not found exception.
-     *
-     * @param mixed $data The data to be enclosed in the response (defaults to <code>null</code>).
-     * @return View The view mapped to a 404 HTTP status code.
-     */
-    protected function createHttpNotFoundView($data = null)
-    {
-        return $this->view($data, Response::HTTP_NOT_FOUND);
-    }
-
-    /**
-     * Converts unique constraint exception on a property into a 409 HTTP status code.
-     *
-     * @param UniqueConstraintException $exception The exception that caused a unique constraint violation.
-     * @return View The view mapped to a 409 HTTP status code.
-     */
-    protected function uniqueViolationToHttpConflictView(UniqueConstraintException $exception)
-    {
-        $errors = new ErrorsContent();
-        $errors->mergeFieldErrors(
-            $exception->getProperty(),
-            array($this->translator->trans(
-                'controller.general.uniquevalueerror',
-                array(),
-                self::CONTROLLER_DOMAIN
-            ))
-        );
-        $content = new ErrorResponseContent($errors);
-        return $this->view($content, Response::HTTP_CONFLICT);
-    }
-
-    /**
-     * Converts exceptions into a 400 HTTP status code.
-     *
-     * If the exception is a {@link ValidationException}, a special behaviour allows to keep field-related violations
-     * intact.
-     *
-     * @param Exception $exception An exception.
-     * @return View The view mapped to a 400 HTTP status code.
-     */
-    protected function exceptionToHttpBadRequestView(Exception $exception)
-    {
-        $errors = new ErrorsContent();
-        if ($exception instanceof ValidationException) {
-            $errors->addGlobalErrors($exception->getGlobalErrors());
-            $allFieldErrors = $exception->getFieldErrors();
-            foreach ($allFieldErrors as $fieldName => $fieldErrors) {
-                $errors->mergeFieldErrors($fieldName, $fieldErrors);
-            }
-        } else {
-            $errors->addGlobalErrors(array($exception->getMessage()));
-        }
-
-        $content = new ErrorResponseContent($errors);
-        return $this->createHttpBadRequestView($content);
     }
 }

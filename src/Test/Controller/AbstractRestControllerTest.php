@@ -6,13 +6,13 @@ use Exception;
 use Inneair\Synapps\Exception\UniqueConstraintException;
 use Inneair\SynappsBundle\Exception\ValidationException;
 use Inneair\SynappsBundle\Http\ErrorResponseContent;
-use Inneair\SynappsBundle\Test\Controller\Fixture\ConcreteController;
+use Inneair\SynappsBundle\Test\Controller\Fixture\ConcreteRestController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class containing tests for the abstract controller.
  */
-class AbstractControllerTest extends AbstractUnitTest
+class AbstractRestControllerTest extends AbstractUnitTest
 {
     /**
      * An error message.
@@ -38,7 +38,7 @@ class AbstractControllerTest extends AbstractUnitTest
     {
         parent::setUp();
 
-        $this->controller = $this->getController(ConcreteController::class);
+        $this->controller = $this->getController(ConcreteRestController::class);
     }
 
     /**
@@ -114,18 +114,18 @@ class AbstractControllerTest extends AbstractUnitTest
     {
         $exception = new Exception(self::ERROR_MESSAGE);
         $view = $this->controller->exceptionToHttpBadRequestViewInternal($exception);
-    
+
         $this->assertNotNull($view);
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $view->getStatusCode());
         $data = $view->getData();
         $this->assertTrue($data instanceof ErrorResponseContent);
         $this->assertNotNull($data->errors);
-    
+
         $globalErrors = $data->errors->getGlobalErrors();
         $this->assertTrue(is_array($globalErrors));
         $this->assertCount(1, $globalErrors);
         $this->assertEquals($exception->getMessage(), $globalErrors[0]);
-    
+
         $fieldsErrors = $data->errors->getFieldsErrors();
         $this->assertTrue(is_array($fieldsErrors));
         $this->assertCount(0, $fieldsErrors);

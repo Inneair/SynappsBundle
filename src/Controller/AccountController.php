@@ -5,7 +5,6 @@ namespace Inneair\SynappsBundle\Controller;
 use FOS\RestBundle\Controller\Annotations\View as RestView;
 use FOS\RestBundle\View\View;
 use FOS\UserBundle\Model\UserInterface;
-use Inneair\SynappsBundle\Controller\AbstractController;
 use Inneair\SynappsBundle\Model\Account;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -14,7 +13,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * Web interface for accounts management.
  * @Route(service="inneair_synapps.accountcontroller")
  */
-class AccountController extends AbstractController
+class AccountController extends AbstractRestController
 {
     /**
      * Action called to get a content type.

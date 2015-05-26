@@ -27,10 +27,10 @@ class DefaultEntityRepository extends EntityRepository
      */
     public function findOneByCaseInsensitive($property, $value)
     {
-        $queryBuilder = $this->createQueryBuilder(self::ENTITY_ALIAS);
+        $queryBuilder = $this->createQueryBuilder(static::ENTITY_ALIAS);
         $expressionBuilder = $queryBuilder->expr();
         $queryBuilder->where($expressionBuilder->eq(
-            $expressionBuilder->lower(self::ENTITY_ALIAS . '.' . $property),
+            $expressionBuilder->lower(static::ENTITY_ALIAS . '.' . $property),
             $expressionBuilder->lower(':value')
         ));
         $queryBuilder->setParameter('value', $value);
@@ -49,14 +49,14 @@ class DefaultEntityRepository extends EntityRepository
      */
     public function findGreatestIndex($property, $prefix)
     {
-        $queryBuilder = $this->createQueryBuilder(self::ENTITY_ALIAS);
+        $queryBuilder = $this->createQueryBuilder(static::ENTITY_ALIAS);
         $expressionBuilder = $queryBuilder->expr();
         $queryBuilder->select($expressionBuilder->max($expressionBuilder->substring(
-            self::ENTITY_ALIAS . '.' . $property,
+            static::ENTITY_ALIAS . '.' . $property,
             mb_strlen($prefix) + 1
         )));
         $queryBuilder->where($expressionBuilder->like(
-            self::ENTITY_ALIAS . '.' . $property,
+            static::ENTITY_ALIAS . '.' . $property,
             $expressionBuilder->literal(Helper::escapeLikePattern($prefix) . Helper::LIKE_ANY_STRING_WILDCARD)
         ));
         try {

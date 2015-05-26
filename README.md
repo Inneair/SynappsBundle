@@ -28,16 +28,9 @@ Syntax for changes: _`<type of modification> [domain] <description>`_
 
 `<description>` is a descriptive text of the modification. 
 
-#### 1.0.1 (2014-10-20)
+#### 1.1.0 (2015-05-29)
 
-- UPG Added PHPUnit 4.2+ dependency for automated testing.
-- UPG Added phpDocumentor 2.0+ dependency.
-- IMP Lowered complexity of transaction-related classes.
-- IMP Added many test cases to increase confidence in released packages.
-
-#### 1.0.0 (2014-09-14)
-
- * REF Migration into a dedicated VCS.
+- IMP Added HTTP abstract controller (compatibility break with the REST abstract controller).
 
 ------
 ## 2. Requirements

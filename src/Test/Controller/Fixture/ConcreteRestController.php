@@ -4,13 +4,13 @@ namespace Inneair\SynappsBundle\Test\Controller\Fixture;
 
 use Exception;
 use Inneair\Synapps\Exception\UniqueConstraintException;
-use Inneair\SynappsBundle\Controller\AbstractController;
+use Inneair\SynappsBundle\Controller\AbstractRestController;
 use Inneair\SynappsBundle\Exception\ValidationException;
 
 /**
- * A test implementation of base controller that allows to test protected/private utilities.
+ * A test implementation of a REST controller that allows to test protected/private utilities.
  */
-class ConcreteController extends AbstractController
+class ConcreteRestController extends AbstractRestController
 {
 
     /**
