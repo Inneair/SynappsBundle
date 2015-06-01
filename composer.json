@@ -30,7 +30,7 @@
 	},
 	"require" : {
 		"php" : "5.5.*",
-		"inneair/synapps" : "~1.0-dev",
+		"inneair/synapps" : "~1.0",
 		"symfony/symfony" : "~2.5",
 		"sensio/framework-extra-bundle" : "~3.0",
 		"doctrine/orm" : "~2.2,>=2.2.3",
