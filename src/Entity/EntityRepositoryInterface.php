@@ -2,10 +2,12 @@
 
 namespace Inneair\SynappsBundle\Entity;
 
+use Doctrine\Common\Persistence\ObjectRepository;
+
 /**
  * Default entity repository that provides additional services over Doctrine's entity repository.
  */
-interface EntityRepositoryInterface
+interface EntityRepositoryInterface extends ObjectRepository
 {
     /**
      * Add an entity to the repository.
