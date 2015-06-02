@@ -8,13 +8,22 @@ namespace Inneair\SynappsBundle\Entity;
 interface EntityRepositoryInterface
 {
     /**
-     * Add a entity to the repository.
+     * Add an entity to the repository.
      *
-     * @param object $entity
-     * @param bool $flush
-     * @return object
+     * @param object $entity Entity to add.
+     * @param bool $flush Flush the transaction, default to <code>false</code>.
+     * @return object The added entity.
      */
     public function add($entity, $flush = false);
+
+    /**
+     * Update an entity to the repository.
+     *
+     * @param object $entity Entity to update.
+     * @param bool $flush Flush the transaction, default to <code>false</code>.
+     * @return object The updated entity.
+     */
+    public function update($entity, $flush = false);
 
     /**
      * Finds a single entity by a unique property (case-insensitive).

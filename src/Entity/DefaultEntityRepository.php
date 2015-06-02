@@ -33,6 +33,18 @@ class DefaultEntityRepository extends EntityRepository implements EntityReposito
     /**
      * {@inheritDoc}
      */
+    public function update($entity, $flush = false)
+    {
+        $entity = $this->_em->merge($entity);
+        if ($flush) {
+            $this->_em->flush($entity);
+        }
+        return $entity;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function findOneByCaseInsensitive($property, $value)
     {
         $queryBuilder = $this->createQueryBuilder(static::ENTITY_ALIAS);
