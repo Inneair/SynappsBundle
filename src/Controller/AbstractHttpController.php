@@ -2,16 +2,10 @@
 
 namespace Inneair\SynappsBundle\Controller;
 
-use Exception;
-use Inneair\Synapps\Exception\UniqueConstraintException;
-use Inneair\SynappsBundle\Exception\ValidationException;
-use Inneair\SynappsBundle\Http\ErrorsContent;
-use Inneair\SynappsBundle\Http\ErrorResponseContent;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\Translation\TranslatorInterface;
 

@@ -47,8 +47,10 @@ class HttpRequestParametersValidator extends ConstraintValidator
                 );
             }
         } else {
-            throw new RuntimeException('Invalid constraint: ' . HttpRequestParameters::class
-                . ' instance expected, ' . get_class($constraint) . ' provided');
+            throw new RuntimeException(
+                'Invalid constraint: ' . HttpRequestParameters::class . ' instance expected, ' . get_class($constraint)
+                . ' provided'
+            );
         }
     }
 }

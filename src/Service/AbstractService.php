@@ -2,12 +2,11 @@
 
 namespace Inneair\SynappsBundle\Service;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Inneair\SynappsBundle\Annotation\TransactionalAwareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

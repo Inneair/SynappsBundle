@@ -19,6 +19,22 @@ class DefaultEntityRepository extends EntityRepository
     const ENTITY_ALIAS = 'e';
 
     /**
+     * Add a entity to the repository.
+     *
+     * @param object $entity
+     * @param bool $flush
+     * @return object
+     */
+    public function add($entity, $flush = false)
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush($entity);
+        }
+        return $entity;
+    }
+
+    /**
      * Finds a single entity by a unique property (case-insensitive).
      *
      * @param string $property Property name.

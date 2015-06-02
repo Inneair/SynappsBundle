@@ -31,8 +31,9 @@ class NotInValidator extends ConstraintValidator
                 }
             }
         } else {
-            throw new RuntimeException('Invalid constraint: ' . NotIn::class
-                . ' instance expected, ' . get_class($constraint) . ' provided');
+            throw new RuntimeException(
+                'Invalid constraint: ' . NotIn::class . ' instance expected, ' . get_class($constraint) . ' provided'
+            );
         }
     }
 }

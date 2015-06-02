@@ -110,7 +110,9 @@ class TransactionalInterceptor implements MethodInterceptorInterface
      *
      * @param bool $transactionRequired If a new transaction was required.
      * @param EntityManager $entityManager Entity manager
+     * @param Exception $e Exception to throw at the end of the additional process.
      * @param string[] $noRollbackExceptions An array of exceptions that shall not lead to a transaction rollback.
+     * @throws Exception At the end of the additional process (given exception).
      */
     protected function afterMethodInvocationFailure(
         $transactionRequired,
