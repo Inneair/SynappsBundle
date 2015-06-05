@@ -47,7 +47,7 @@ class DefaultEntityRepository extends EntityRepository implements EntityReposito
      */
     public function delete($entity, $flush = false)
     {
-        $entity = $this->_em->merge($entity);
+        $this->_em->remove($entity);
         if ($flush) {
             $this->_em->flush($entity);
         }
