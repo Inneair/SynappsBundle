@@ -30,10 +30,10 @@ interface EntityRepositoryInterface extends ObjectRepository
     /**
      * Delete an entity to the repository.
      *
-     * @param object $entity Entity to delete.
+     * @param int $id Entity ID to delete.
      * @param bool $flush Flush the transaction, default to <code>false</code>.
      */
-    public function delete($entity, $flush = false);
+    public function delete($id, $flush = false);
 
     /**
      * Finds a single entity by a unique property (case-insensitive).
