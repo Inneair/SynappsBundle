@@ -22,18 +22,16 @@ interface EntityRepositoryInterface extends ObjectRepository
      * Update an entity to the repository.
      *
      * @param object $entity Entity to update.
-     * @param bool $flush Flush the transaction, default to <code>false</code>.
      * @return object The updated entity.
      */
-    public function update($entity, $flush = false);
+    public function update($entity);
 
     /**
      * Delete an entity to the repository.
      *
-     * @param int $id Entity ID to delete.
-     * @param bool $flush Flush the transaction, default to <code>false</code>.
+     * @param int $id Entity ID.
      */
-    public function delete($id, $flush = false);
+    public function delete($id);
 
     /**
      * Finds a single entity by a unique property (case-insensitive).

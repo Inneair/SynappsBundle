@@ -33,25 +33,18 @@ class DefaultEntityRepository extends EntityRepository implements EntityReposito
     /**
      * {@inheritDoc}
      */
-    public function update($entity, $flush = false)
+    public function update($entity)
     {
-        $entity = $this->_em->merge($entity);
-        if ($flush) {
-            $this->_em->flush($entity);
-        }
-        return $entity;
+        return $this->_em->merge($entity);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function delete($id, $flush = false)
+    public function delete($id)
     {
         $entity = $this->_em->getReference($this->getEntityName(), $id);
         $this->_em->remove($entity);
-        if ($flush) {
-            $this->_em->flush($entity);
-        }
     }
 
     /**
