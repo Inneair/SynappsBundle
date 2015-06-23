@@ -24,7 +24,7 @@ interface EntityRepositoryInterface extends ObjectRepository
      *
      * @param object $entity Entity to update.
      * @param bool $flush Flush the unit of work (default to <code>false</code>). This may be required if the ID of an
-     internal relation is required before the end of the transaction.
+     * internal relation is required before the end of the transaction.
      * @return object The updated entity.
      */
     public function update($entity, $flush = false);
