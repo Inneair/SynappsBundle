@@ -13,7 +13,8 @@ interface EntityRepositoryInterface extends ObjectRepository
      * Add an entity to the repository.
      *
      * @param object $entity Entity to add.
-     * @param bool $flush Flush the transaction, default to <code>false</code>.
+     * @param bool $flush Flush the unit of work (default to <code>false</code>). This may be required if the new entity
+     * ID, or the ID of an internal relation is required before the end of the transaction.
      * @return object The added entity.
      */
     public function add($entity, $flush = false);
@@ -22,9 +23,11 @@ interface EntityRepositoryInterface extends ObjectRepository
      * Update an entity to the repository.
      *
      * @param object $entity Entity to update.
+     * @param bool $flush Flush the unit of work (default to <code>false</code>). This may be required if the ID of an
+     internal relation is required before the end of the transaction.
      * @return object The updated entity.
      */
-    public function update($entity);
+    public function update($entity, $flush = false);
 
     /**
      * Delete an entity to the repository.
