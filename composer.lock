@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "209638abce009a9c7cc3178aabd3c531",
+    "hash": "793e9476620fc27e609f918bf610483c",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -759,7 +759,7 @@
         },
         {
             "name": "inneair/synapps",
-            "version": "dev-master",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inneair/synapps",
@@ -3995,9 +3995,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "inneair/synapps": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
