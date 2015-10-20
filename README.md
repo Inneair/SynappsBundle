@@ -28,6 +28,10 @@ Syntax for changes: _`<type of modification> [domain] <description>`_
 
 `<description>` is a descriptive text of the modification. 
 
+#### 1.1.2 (2015-10-20)
+
+- IMP Added support of PHP 5.5+.
+
 #### 1.1.0 (2015-05-29)
 
 - IMP Added HTTP abstract controller (compatibility break with the REST abstract controller).
@@ -35,7 +39,7 @@ Syntax for changes: _`<type of modification> [domain] <description>`_
 ------
 ## 2. Requirements
 ### Software requirements
-- [PHP](http://www.php.net/) 5.5
+- [PHP](http://www.php.net/) 5.5+
 - [Symfony](http://www.symfony.com/) 2.5+
 
 ### PHP configuration
