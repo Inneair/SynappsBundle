@@ -75,7 +75,7 @@
 
         <!-- Inneair validators -->
         <!-- HTTP request validator -->
-        <service id="inneair_synapps.httprequestvalidator" class="%inneair_synapps.httprequestvalidator.class%" scope="request">
+        <service id="inneair_synapps.httprequestvalidator" class="%inneair_synapps.httprequestvalidator.class%">
             <argument type="service" id="request_stack" />
             <tag name="validator.constraint_validator" alias="httprequestparametersvalidator" />
         </service>
