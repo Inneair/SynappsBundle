@@ -3,7 +3,7 @@
 namespace Inneair\SynappsBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Inneair\SynappsBundle\Annotation\TransactionalAwareInterface;
+use Inneair\TransactionBundle\Annotation\TransactionalAwareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
