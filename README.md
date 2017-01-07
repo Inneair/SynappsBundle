@@ -28,6 +28,13 @@ Syntax for changes: _`<type of modification> [domain] <description>`_
 
 `<description>` is a descriptive text of the modification. 
 
+#### 1.2.0 (2016-01-07)
+
+- UPG Upgrade vendors
+- REF Move tests outside src folder
+- REF Remove translator service from abstract controllers
+- REF Remove container service from abstract service
+
 #### 1.1.3 (2015-10-20)
 
 - IMP Added support of PHP 7.
