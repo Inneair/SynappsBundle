@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Collection;
 final class CollectionUtils
 {
     /**
-     * Prevents unwanted instanciations.
+     * Prevents unwanted instantiations.
      * @codeCoverageIgnore
      */
     private function __construct()

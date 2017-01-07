@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Abstract web controller providing additional services over the Symfony controller.
@@ -21,27 +20,10 @@ abstract class AbstractHttpController extends Controller
     const CONTROLLER_DOMAIN = 'controllers';
 
     /**
-     * Translator service.
-     * @var TranslatorInterface
-     */
-    protected $translator;
-    /**
      * Logging service.
      * @var LoggerInterface
      */
     protected $logger;
-
-    /**
-     * Sets the translator service.
-     *
-     * NOTE: this method is automatically invoked by the framework, and should never be called manually.
-     *
-     * @param TranslatorInterface $translator Translator service.
-     */
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
 
     /**
      * Sets the logging service.
@@ -60,7 +42,7 @@ abstract class AbstractHttpController extends Controller
      *
      * NOTE: this method is automatically invoked by the framework, and should never be called manually.
      * Actually, this method does nothing but logging the controller is ready. It may be overridden by concrete
-     * controllers, to perform additional initializations other than raw instanciations (but calling this parent method
+     * controllers, to perform additional initializations other than raw instantiations (but calling this parent method
      * is always mandatory to ensure forward compatibility).
      */
     public function init()

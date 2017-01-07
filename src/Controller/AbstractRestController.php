@@ -14,7 +14,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Abstract web controller providing additional services over the FOS REST controller, and the Symfony controller.
@@ -28,27 +27,10 @@ abstract class AbstractRestController extends FOSRestController
     const CONTROLLER_DOMAIN = 'controllers';
 
     /**
-     * Translator service.
-     * @var TranslatorInterface
-     */
-    protected $translator;
-    /**
      * Logging service.
      * @var LoggerInterface
      */
     protected $logger;
-
-    /**
-     * Sets the translator service.
-     *
-     * NOTE: this method is automatically invoked by the framework, and should never be called manually.
-     *
-     * @param TranslatorInterface $translator Translator service.
-     */
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
 
     /**
      * Sets the logging service.
@@ -67,7 +49,7 @@ abstract class AbstractRestController extends FOSRestController
      *
      * NOTE: this method is automatically invoked by the framework, and should never be called manually.
      * Actually, this method does nothing but logging the controller is ready. It may be overridden by concrete
-     * controllers, to perform additional initializations other than raw instanciations (but calling this parent method
+     * controllers, to perform additional initializations other than raw instantiations (but calling this parent method
      * is always mandatory to ensure forward compatibility).
      */
     public function init()
@@ -147,10 +129,7 @@ abstract class AbstractRestController extends FOSRestController
     protected function uniqueViolationToHttpConflictView(UniqueConstraintException $exception)
     {
         $errors = new ErrorsContent();
-        $errors->mergeFieldErrors(
-            $exception->getProperty(),
-            [$this->translator->trans('controller.general.uniquevalueerror', [], self::CONTROLLER_DOMAIN)]
-        );
+        $errors->mergeFieldErrors($exception->getProperty(), ['controller.general.uniquevalueerror']);
         $content = new ErrorResponseContent($errors);
         return $this->view($content, Response::HTTP_CONFLICT);
     }

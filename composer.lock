@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "37ee281bb5a357725505b49ec580d557",
-    "content-hash": "c5acfb9a0ac1a4ee7284d42991465ff9",
+    "hash": "411dcd3e88cc50cc8bb61206370c5023",
+    "content-hash": "a99ece50391cd94c2baa5a6514c9e246",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -747,6 +747,67 @@
                 "system"
             ],
             "time": "2017-01-06 21:11:24"
+        },
+        {
+            "name": "inneair/transaction-bundle",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Inneair/transaction-bundle.git",
+                "reference": "bf907c7364200bafcc3766752a68380cdb60e1e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Inneair/transaction-bundle/zipball/bf907c7364200bafcc3766752a68380cdb60e1e3",
+                "reference": "bf907c7364200bafcc3766752a68380cdb60e1e3",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "~2.5",
+                "jms/aop-bundle": "~1.0",
+                "php": ">=5.6",
+                "psr/log": "~1.0",
+                "symfony/config": "~3.0",
+                "symfony/dependency-injection": "~3.0",
+                "symfony/doctrine-bridge": "~3.0",
+                "symfony/http-kernel": "~3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.0",
+                "satooshi/php-coveralls": "~1.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Inneair\\TransactionBundle\\Test\\": "tests/",
+                    "Inneair\\TransactionBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Inneair",
+                    "homepage": "https://www.github.com/Inneair"
+                }
+            ],
+            "description": "Transaction bundle for Symfony",
+            "keywords": [
+                "aop",
+                "bundle",
+                "inneair",
+                "symfony",
+                "transaction",
+                "tx"
+            ],
+            "time": "2016-10-21 09:38:09"
         },
         {
             "name": "jms/aop-bundle",

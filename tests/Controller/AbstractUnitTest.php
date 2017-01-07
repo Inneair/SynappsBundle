@@ -10,7 +10,6 @@ use ReflectionException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Base class for unit tests of controllers.
@@ -37,11 +36,6 @@ abstract class AbstractUnitTest extends AbstractTest
      * @var PHPUnit_Framework_MockObject_MockObject
      */
     private $router;
-    /**
-     * Mocked translator.
-     * @var PHPUnit_Framework_MockObject_MockObject
-     */
-    private $translator;
 
     /**
      * {@inheritDoc}
@@ -51,7 +45,6 @@ abstract class AbstractUnitTest extends AbstractTest
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->router = $this->createMock(RouterInterface::class);
-        $this->translator = $this->createMock(TranslatorInterface::class);
 
         $this->container = $this->createMock(ContainerInterface::class);
         $this->container->expects(static::any())->method('get')->willReturnCallback([$this, 'getComponent']);
@@ -77,9 +70,6 @@ abstract class AbstractUnitTest extends AbstractTest
             case 'router':
                 $component = $this->router;
                 break;
-            case 'translator':
-                $component = $this->translator;
-                break;
             default:
                 $component = null;
                 break;
@@ -104,7 +94,7 @@ abstract class AbstractUnitTest extends AbstractTest
      * @param string $className Full class name of the controller.
      * @param array $controllerArgs Optional arguments for the controller constructor (defaults to <code>null</code>).
      * @return AbstractController The controller instance.
-     * @throws ReflectionException If the controller cannot be instanciated.
+     * @throws ReflectionException If the controller cannot be instantiated.
      */
     protected function getController($className, array $controllerArgs = null)
     {
@@ -115,7 +105,6 @@ abstract class AbstractUnitTest extends AbstractTest
             $controller = $class->newInstanceArgs($controllerArgs);
         }
         $controller->setContainer($this->getContainer());
-        $controller->setTranslator($this->getTranslator());
         $controller->setLogger($this->getLogger());
         $controller->init();
         return $controller;
@@ -149,15 +138,5 @@ abstract class AbstractUnitTest extends AbstractTest
     protected function getRouter()
     {
         return $this->router;
-    }
-
-    /**
-     * Gets the mocked translation service.
-     *
-     * @return PHPUnit_Framework_MockObject_MockObject The mocked translation service.
-     */
-    protected function getTranslator()
-    {
-        return $this->translator;
     }
 }

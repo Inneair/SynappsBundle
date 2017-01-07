@@ -27,9 +27,6 @@
         <!-- Inneair Synapps services -->
         <!-- Core abstract service -->
         <service id="inneair_synapps.abstractservice" class="%inneair_synapps.abstractservice.class%" abstract="true">
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
             <call method="setEventDispatcher">
                 <argument type="service" id="event_dispatcher" />
             </call>

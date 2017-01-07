@@ -63,9 +63,9 @@ class DefaultObjectConstructor implements ObjectConstructorInterface
             $class = new ReflectionClass($metadata->name);
             $object = $class->newInstance();
         } catch (ReflectionException $e) {
-            // Exception thrown if the class is not instanciable, or has no
+            // Exception thrown if the class is not instantiable, or has no
             // default constructor (with no args).
-            $this->logger->warn('Class is not instanciable (class or empty constructor not found): ' . $e);
+            $this->logger->warn('Class is not instantiable (class or empty constructor not found): ' . $e);
 
             // Try to get the object from the fallback constructor.
             $object = $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);

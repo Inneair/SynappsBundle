@@ -2,8 +2,6 @@
 
 namespace Inneair\SynappsBundle\Http;
 
-use Inneair\Synapps\Util\StringUtils;
-
 /**
  * A base class for all HTTP response contents containing errors, and that can be used for serialization/deserialization
  * purposes.
@@ -31,16 +29,5 @@ class ErrorResponseContent
     {
         $this->errors = $errors;
         $this->data = $data;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @codeCoverageIgnore
-     */
-    public function __toString()
-    {
-        return 'ErrorResponseContent {errors='
-            . StringUtils::defaultString($this->errors) . ', data='
-            . StringUtils::defaultString($this->data) . '}';
     }
 }

@@ -32,6 +32,7 @@
 	"require" : {
 		"php" : ">=5.6",
 		"inneair/synapps" : "^1.0",
+		"inneair/transaction-bundle": "^1.0",
 		"symfony/symfony" : "3.2.*",
 		"sensio/framework-extra-bundle": "^3.0.2",
 		"doctrine/orm" : "^2.5",

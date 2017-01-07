@@ -2,8 +2,6 @@
 
 namespace Inneair\SynappsBundle\Http;
 
-use Inneair\Synapps\Util\StringUtils;
-
 /**
  * A class representing errors, that can be used in HTTP responses related to failures, and for
  * serialization/deserialization purposes.
@@ -119,16 +117,5 @@ class ErrorsContent
                 $this->fieldsErrors[$fieldName][] = $fieldErrorMessage;
             }
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     * @codeCoverageIgnore
-     */
-    public function __toString()
-    {
-        return 'ErrorsContent {global='
-            . StringUtils::defaultString($this->globalErrors) . ', fields='
-            . StringUtils::defaultString($this->fieldsErrors) . '}';
     }
 }
