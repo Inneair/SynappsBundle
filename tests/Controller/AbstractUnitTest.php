@@ -48,12 +48,12 @@ abstract class AbstractUnitTest extends AbstractTest
      */
     public function setUp()
     {
-        $this->formFactory = $this->getMock(FormFactoryInterface::class);
-        $this->logger = $this->getMock(LoggerInterface::class);
-        $this->router = $this->getMock(RouterInterface::class);
-        $this->translator = $this->getMock(TranslatorInterface::class);
+        $this->formFactory = $this->createMock(FormFactoryInterface::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
+        $this->router = $this->createMock(RouterInterface::class);
+        $this->translator = $this->createMock(TranslatorInterface::class);
 
-        $this->container = $this->getMock(ContainerInterface::class);
+        $this->container = $this->createMock(ContainerInterface::class);
         $this->container->expects(static::any())->method('get')->willReturnCallback(array($this, 'getComponent'));
 
         parent::setUp();

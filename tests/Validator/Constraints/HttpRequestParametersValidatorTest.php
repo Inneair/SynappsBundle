@@ -4,28 +4,37 @@ namespace Inneair\SynappsBundle\Validator\Constraints;
 
 use Inneair\Synapps\Http\Method;
 use Inneair\SynappsBundle\Test\AbstractTest;
-use Inneair\SynappsBundle\Validator\Constraints\NotInValidator;
+use Inneair\SynappsBundle\Validator\Constraints\HttpRequestParametersValidator;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContext;
-use Inneair\Synapps\Util\StringUtils;
 
 /**
- * Class containing test suite for the {@link NotInValidator} validator.
+ * Class containing test suite for the {@link HttpRequestParametersValidator} validator.
  */
-class NotInTest extends AbstractTest
+class HttpRequestParametersValidatorTest extends AbstractTest
 {
     /**
-     * Value in lower case.
+     * Parameter name.
      * @var string
      */
-    const VALUE_LOWER = 'value';
+    const PARAMETER = 'parameter';
+    /**
+     * An URI.
+     * @var string
+     */
+    const URI = '';
 
     /**
+     * Request stack.
+     * @var PHPUnit_Framework_MockObject_MockObject
+     */
+    private $requestStack;
+    /**
      * Validator.
-     * @var NotInValidator
+     * @var HttpRequestParametersValidator
      */
     private $validator;
 
@@ -34,44 +43,43 @@ class NotInTest extends AbstractTest
      */
     public function setUp()
     {
-        $this->validator = new NotInValidator();
+        $request = Request::create(self::URI);
+        $this->requestStack = $this->createMock(RequestStack::class);
+        $this->requestStack->expects(static::any())->method('getCurrentRequest')->willReturn($request);
+
+        $this->validator = new HttpRequestParametersValidator($this->requestStack);
 
         parent::setUp();
     }
 
     /**
-     * Validates a value is not reserved.
+     * Validates a query with no required parameter.
      */
-    public function testValidateReservedValueWithoutIgnoreCase()
+    public function testValidate()
     {
-        $constraint = new NotIn();
-        $constraint->ignoreCase = false;
-        $constraint->reservedValues[] = mb_strtoupper(self::VALUE_LOWER);
-
         $context = $this->getMockBuilder(ExecutionContext::class)-> disableOriginalConstructor()->getMock();
         $context->expects(static::never())->method('addViolation');
 
         $this->validator->initialize($context);
-        $this->validator->validate(self::VALUE_LOWER, $constraint);
+        $this->validator->validate(null, new HttpRequestParameters());
     }
 
     /**
-     * Validates a value is not reserved.
+     * Validates a query with a missing required parameter.
      */
-    public function testValidateReservedValueWithIgnoreCase()
+    public function testValidateMissingRequiredParameter()
     {
-        $constraint = new NotIn();
-        $constraint->ignoreCase = true;
-        $constraint->reservedValues[] = mb_strtoupper(self::VALUE_LOWER);
+        $constraint = new HttpRequestParameters();
+        $constraint->requiredParameters[] = self::PARAMETER;
 
         $context = $this->getMockBuilder(ExecutionContext::class)-> disableOriginalConstructor()->getMock();
         $context->expects(static::once())->method('addViolation')->with(
-            $constraint->message,
-            array('{{ reserved_values }}' => implode(StringUtils::ARRAY_VALUES_SEPARATOR, $constraint->reservedValues))
+            $constraint->requiredParametersMessage,
+            array('{{ parameters }}' => self::PARAMETER)
         );
 
         $this->validator->initialize($context);
-        $this->validator->validate(self::VALUE_LOWER, $constraint);
+        $this->validator->validate(null, $constraint);
     }
 
     /**

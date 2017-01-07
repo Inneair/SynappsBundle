@@ -30,8 +30,8 @@ class RestAuthenticationFailureHandlerTest extends AbstractTest
         parent::setUp();
 
         $this->failureHandler = new RestAuthenticationFailureHandler(
-            $this->getMock(HttpKernelInterface::class),
-            $this->getMock(HttpUtils::class),
+            $this->createMock(HttpKernelInterface::class),
+            $this->createMock(HttpUtils::class),
             array()
         );
     }
@@ -41,7 +41,7 @@ class RestAuthenticationFailureHandlerTest extends AbstractTest
      */
     public function testAuthenticationFailure()
     {
-        $session = $this->getMock(SessionInterface::class);
+        $session = $this->createMock(SessionInterface::class);
         $request = new Request();
         $request->setSession($session);
 

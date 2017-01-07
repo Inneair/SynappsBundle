@@ -7,7 +7,6 @@ use Inneair\SynappsBundle\Test\AbstractTest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\HttpUtils;
 
 /**
@@ -28,7 +27,7 @@ class RestAuthenticationSuccessHandlerTest extends AbstractTest
     {
         parent::setUp();
 
-        $this->successHandler = new RestAuthenticationSuccessHandler($this->getMock(HttpUtils::class), array());
+        $this->successHandler = new RestAuthenticationSuccessHandler($this->createMock(HttpUtils::class), array());
     }
 
     /**
@@ -36,7 +35,7 @@ class RestAuthenticationSuccessHandlerTest extends AbstractTest
      */
     public function testAuthenticationSuccess()
     {
-        $response = $this->successHandler->onAuthenticationSuccess(new Request(), $this->getMock(TokenInterface::class));
+        $response = $this->successHandler->onAuthenticationSuccess(new Request(), $this->createMock(TokenInterface::class));
         $this->assertNotNull($response);
         $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertEmpty($response->getContent());

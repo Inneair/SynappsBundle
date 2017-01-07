@@ -6,8 +6,6 @@ use Inneair\SynappsBundle\Security\Http\Authentication\RestLogoutSuccessHandler;
 use Inneair\SynappsBundle\Test\AbstractTest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\HttpUtils;
 
 /**
@@ -28,7 +26,7 @@ class RestLogoutSuccessHandlerTest extends AbstractTest
     {
         parent::setUp();
 
-        $this->successHandler = new RestLogoutSuccessHandler($this->getMock(HttpUtils::class));
+        $this->successHandler = new RestLogoutSuccessHandler($this->createMock(HttpUtils::class));
     }
 
     /**

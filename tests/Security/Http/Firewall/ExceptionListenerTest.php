@@ -9,8 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolverInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -33,9 +33,9 @@ class ExceptionListenerTest extends AbstractTest
         parent::setUp();
     
         $this->exceptionListener = new ExceptionListener(
-            $this->getMock(SecurityContextInterface::class),
-            $this->getMock(AuthenticationTrustResolverInterface::class),
-            $this->getMock(HttpUtils::class),
+            $this->createMock(TokenStorageInterface::class),
+            $this->createMock(AuthenticationTrustResolverInterface::class),
+            $this->createMock(HttpUtils::class),
             null
         );
     }
@@ -46,7 +46,7 @@ class ExceptionListenerTest extends AbstractTest
     public function testListenAuthenticationException()
     {
         $event = new GetResponseForExceptionEvent(
-            $this->getMock(HttpKernelInterface::class),
+            $this->createMock(HttpKernelInterface::class),
             new Request(),
             HttpKernelInterface::MASTER_REQUEST,
             new AuthenticationException()
@@ -62,7 +62,7 @@ class ExceptionListenerTest extends AbstractTest
     public function testListenUnknownException()
     {
         $event = new GetResponseForExceptionEvent(
-            $this->getMock(HttpKernelInterface::class),
+            $this->createMock(HttpKernelInterface::class),
             new Request(),
             HttpKernelInterface::MASTER_REQUEST,
             new Exception()
