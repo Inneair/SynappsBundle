@@ -3,6 +3,7 @@
 namespace Inneair\SynappsBundle\Test\Controller\Fixture;
 
 use Exception;
+use FOS\RestBundle\View\View;
 use Inneair\Synapps\Exception\UniqueConstraintException;
 use Inneair\SynappsBundle\Controller\AbstractRestController;
 use Inneair\SynappsBundle\Exception\ValidationException;
@@ -12,7 +13,6 @@ use Inneair\SynappsBundle\Exception\ValidationException;
  */
 class ConcreteRestController extends AbstractRestController
 {
-
     /**
      * A method that gives access to the {@link AbstractController#createHttpBadRequestView} method.
      *

@@ -36,8 +36,8 @@ class ErrorContentTest extends AbstractTest
      */
     public function testAddGlobalErrors()
     {
-        $content = new ErrorsContent(array(self::ERROR_MESSAGE_1));
-        $content->addGlobalErrors(array(self::ERROR_MESSAGE_1, self::ERROR_MESSAGE_2));
+        $content = new ErrorsContent([self::ERROR_MESSAGE_1]);
+        $content->addGlobalErrors([self::ERROR_MESSAGE_1, self::ERROR_MESSAGE_2]);
         $this->assertCount(2, $content->getGlobalErrors());
         $globalErrors = $content->getGlobalErrors();
         $this->assertTrue(is_array($globalErrors));
@@ -52,19 +52,19 @@ class ErrorContentTest extends AbstractTest
     public function testMerge()
     {
         $content1 = new ErrorsContent(
-            array(self::ERROR_MESSAGE_1),
-            array(
-                self::FIELD_NAME_1 => array(self::ERROR_MESSAGE_1),
-                self::FIELD_NAME_2 => array(self::ERROR_MESSAGE_2)
-            )
+            [self::ERROR_MESSAGE_1],
+            [
+                self::FIELD_NAME_1 => [self::ERROR_MESSAGE_1],
+                self::FIELD_NAME_2 => [self::ERROR_MESSAGE_2]
+            ]
         );
         $content2 = new ErrorsContent(
-            array(self::ERROR_MESSAGE_1, self::ERROR_MESSAGE_2),
-            array(
-                self::FIELD_NAME_2 => array(self::ERROR_MESSAGE_1, self::ERROR_MESSAGE_2)
-            )
+            [self::ERROR_MESSAGE_1, self::ERROR_MESSAGE_2],
+            [
+                self::FIELD_NAME_2 => [self::ERROR_MESSAGE_1, self::ERROR_MESSAGE_2]
+            ]
         );
-    
+
         $content1->merge($content2);
     
         $globalErrors = $content1->getGlobalErrors();
@@ -101,7 +101,7 @@ class ErrorContentTest extends AbstractTest
         $this->assertCount(0, $content->getFieldsErrors());
         $this->assertNull($content->getFieldErrors(self::FIELD_NAME_1));
 
-        $content->mergeFieldErrors(self::FIELD_NAME_1, array(self::ERROR_MESSAGE_1));
+        $content->mergeFieldErrors(self::FIELD_NAME_1, [self::ERROR_MESSAGE_1]);
         $this->assertCount(1, $content->getFieldsErrors());
         $fieldErrors = $content->getFieldErrors(self::FIELD_NAME_1);
         $this->assertTrue(is_array($fieldErrors));

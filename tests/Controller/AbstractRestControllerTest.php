@@ -27,7 +27,7 @@ class AbstractRestControllerTest extends AbstractUnitTest
 
     /**
      * A concrete controller.
-     * @var ConcreteController
+     * @var ConcreteRestController
      */
     private $controller;
 
@@ -46,7 +46,7 @@ class AbstractRestControllerTest extends AbstractUnitTest
      */
     public function testCreateHttpBadRequestView()
     {
-        $data = array();
+        $data = [];
         $view = $this->controller->createHttpBadRequestViewInternal($data);
 
         $this->assertNotNull($view);
@@ -59,7 +59,7 @@ class AbstractRestControllerTest extends AbstractUnitTest
      */
     public function testCreateHttpConflictViewInternal()
     {
-        $data = array();
+        $data = [];
         $view = $this->controller->createHttpConflictViewInternal($data);
 
         $this->assertNotNull($view);
@@ -72,7 +72,7 @@ class AbstractRestControllerTest extends AbstractUnitTest
      */
     public function testCreateHttpNotFoundViewInternal()
     {
-        $data = array();
+        $data = [];
         $view = $this->controller->createHttpNotFoundViewInternal($data);
 
         $this->assertNotNull($view);
@@ -137,8 +137,8 @@ class AbstractRestControllerTest extends AbstractUnitTest
     public function testValidationExceptionToHttpBadRequestView()
     {
         $exception = new ValidationException(
-            array(self::ERROR_MESSAGE),
-            array(self::FIELD_NAME => array(self::ERROR_MESSAGE))
+            [self::ERROR_MESSAGE],
+            [self::FIELD_NAME => [self::ERROR_MESSAGE]]
         );
         $view = $this->controller->exceptionToHttpBadRequestViewInternal($exception);
 

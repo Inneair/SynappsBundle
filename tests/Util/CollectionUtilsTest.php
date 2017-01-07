@@ -26,11 +26,11 @@ class CollectionUtilsTest extends AbstractTest
      */
     public function testResetKeys()
     {
-        $collection = CollectionUtils::resetKeys(new ArrayCollection(array(
+        $collection = CollectionUtils::resetKeys(new ArrayCollection([
             'stringkey' => 'stringkey',
             2 => 'integerkey',
-            false => 'booleankey',
-        )));
+            false => 'booleankey'
+        ]));
         $this->assertNotNull($collection);
         $this->assertCount(3, $collection);
         $flippedArray = array_flip($collection->toArray());

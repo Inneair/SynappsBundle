@@ -27,7 +27,7 @@ class RestAuthenticationSuccessHandlerTest extends AbstractTest
     {
         parent::setUp();
 
-        $this->successHandler = new RestAuthenticationSuccessHandler($this->createMock(HttpUtils::class), array());
+        $this->successHandler = new RestAuthenticationSuccessHandler($this->createMock(HttpUtils::class), []);
     }
 
     /**

@@ -32,7 +32,7 @@ class RestAuthenticationFailureHandlerTest extends AbstractTest
         $this->failureHandler = new RestAuthenticationFailureHandler(
             $this->createMock(HttpKernelInterface::class),
             $this->createMock(HttpUtils::class),
-            array()
+            []
         );
     }
 

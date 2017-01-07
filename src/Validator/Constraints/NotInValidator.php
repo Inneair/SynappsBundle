@@ -17,23 +17,20 @@ class NotInValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($constraint instanceof NotIn) {
-            // Ensures the property name is not a reserved name.
-            foreach ($constraint->reservedValues as $reservedValue) {
-                if (StringUtils::equals($reservedValue, $value, $constraint->ignoreCase)) {
-                    $this->context->addViolation(
-                        $constraint->message,
-                        array(
-                            '{{ reserved_values }}'
-                                => implode(StringUtils::ARRAY_VALUES_SEPARATOR, $constraint->reservedValues)
-                        )
-                    );
-                }
-            }
-        } else {
+        if (!$constraint instanceof NotIn) {
             throw new RuntimeException(
                 'Invalid constraint: ' . NotIn::class . ' instance expected, ' . get_class($constraint) . ' provided'
             );
+        }
+
+        // Ensures the property name is not a reserved name.
+        foreach ($constraint->reservedValues as $reservedValue) {
+            if (StringUtils::equals($reservedValue, $value, $constraint->ignoreCase)) {
+                $this->context->addViolation(
+                    $constraint->message,
+                    ['{{ reserved_values }}' => implode(StringUtils::ARRAY_VALUES_SEPARATOR, $constraint->reservedValues)]
+                );
+            }
         }
     }
 }

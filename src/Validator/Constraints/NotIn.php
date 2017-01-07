@@ -15,7 +15,7 @@ class NotIn extends Constraint
      * Array of reserved values.
      * @var array
      */
-    public $reservedValues = array();
+    public $reservedValues = [];
     /**
      * Tells the check the value using a case-insensitive comparison.
      * @var boolean

@@ -32,8 +32,8 @@ class ValidationException extends RuntimeException
      * @param Exception $previous Parent exception (defaults to <code>null</code>).
      */
     public function __construct(
-        array $globalErrors = array(),
-        array $fieldErrors = array(),
+        array $globalErrors = [],
+        array $fieldErrors = [],
         $message = null,
         $code = null,
         Exception $previous = null

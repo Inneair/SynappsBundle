@@ -43,7 +43,7 @@ class HttpRequestParametersValidator extends ConstraintValidator
             if (!empty($missingParameters)) {
                 $this->context->addViolation(
                     $constraint->requiredParametersMessage,
-                    array('{{ parameters }}' => implode(StringUtils::ARRAY_VALUES_SEPARATOR, $missingParameters))
+                    ['{{ parameters }}' => implode(StringUtils::ARRAY_VALUES_SEPARATOR, $missingParameters)]
                 );
             }
         } else {

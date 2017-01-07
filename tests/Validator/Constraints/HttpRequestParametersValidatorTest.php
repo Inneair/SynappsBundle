@@ -2,9 +2,8 @@
 
 namespace Inneair\SynappsBundle\Validator\Constraints;
 
-use Inneair\Synapps\Http\Method;
 use Inneair\SynappsBundle\Test\AbstractTest;
-use Inneair\SynappsBundle\Validator\Constraints\HttpRequestParametersValidator;
+use PHPUnit_Framework_MockObject_MockObject;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -29,7 +28,7 @@ class HttpRequestParametersValidatorTest extends AbstractTest
 
     /**
      * Request stack.
-     * @var PHPUnit_Framework_MockObject_MockObject
+     * @var PHPUnit_Framework_MockObject_MockObject|RequestStack
      */
     private $requestStack;
     /**
@@ -75,7 +74,7 @@ class HttpRequestParametersValidatorTest extends AbstractTest
         $context = $this->getMockBuilder(ExecutionContext::class)-> disableOriginalConstructor()->getMock();
         $context->expects(static::once())->method('addViolation')->with(
             $constraint->requiredParametersMessage,
-            array('{{ parameters }}' => self::PARAMETER)
+            ['{{ parameters }}' => self::PARAMETER]
         );
 
         $this->validator->initialize($context);

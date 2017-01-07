@@ -85,7 +85,7 @@ abstract class AbstractRestController extends FOSRestController
      * @return FormInterface A form instance.
      * @throws InvalidOptionsException If any given option is not applicable to the given type.
      */
-    public function createNamedForm($type = 'form', $data = null, array $options = array(), $name = null)
+    public function createNamedForm($type = 'form', $data = null, array $options = [], $name = null)
     {
         return $this->container->get('form.factory')->createNamed($name, $type, $data, $options);
     }
@@ -100,7 +100,7 @@ abstract class AbstractRestController extends FOSRestController
      * @return FormBuilderInterface A form builder instance.
      * @throws InvalidOptionsException If any given option is not applicable to the given type
      */
-    public function createNamedBuilder($type = 'form', $data = null, array $options = array(), $name = null)
+    public function createNamedBuilder($type = 'form', $data = null, array $options = [], $name = null)
     {
         return $this->container->get('form.factory')->createNamedBuilder($name, $type, $data, $options);
     }
@@ -149,11 +149,7 @@ abstract class AbstractRestController extends FOSRestController
         $errors = new ErrorsContent();
         $errors->mergeFieldErrors(
             $exception->getProperty(),
-            array($this->translator->trans(
-                'controller.general.uniquevalueerror',
-                array(),
-                self::CONTROLLER_DOMAIN
-            ))
+            [$this->translator->trans('controller.general.uniquevalueerror', [], self::CONTROLLER_DOMAIN)]
         );
         $content = new ErrorResponseContent($errors);
         return $this->view($content, Response::HTTP_CONFLICT);
@@ -178,7 +174,7 @@ abstract class AbstractRestController extends FOSRestController
                 $errors->mergeFieldErrors($fieldName, $fieldErrors);
             }
         } else {
-            $errors->addGlobalErrors(array($exception->getMessage()));
+            $errors->addGlobalErrors([$exception->getMessage()]);
         }
 
         $content = new ErrorResponseContent($errors);

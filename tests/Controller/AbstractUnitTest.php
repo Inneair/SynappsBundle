@@ -54,7 +54,7 @@ abstract class AbstractUnitTest extends AbstractTest
         $this->translator = $this->createMock(TranslatorInterface::class);
 
         $this->container = $this->createMock(ContainerInterface::class);
-        $this->container->expects(static::any())->method('get')->willReturnCallback(array($this, 'getComponent'));
+        $this->container->expects(static::any())->method('get')->willReturnCallback([$this, 'getComponent']);
 
         parent::setUp();
     }

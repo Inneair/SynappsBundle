@@ -63,7 +63,7 @@ class NotInTest extends AbstractTest
         $context = $this->getMockBuilder(ExecutionContext::class)-> disableOriginalConstructor()->getMock();
         $context->expects(static::once())->method('addViolation')->with(
             $constraint->message,
-            array('{{ reserved_values }}' => implode(StringUtils::ARRAY_VALUES_SEPARATOR, $constraint->reservedValues))
+            ['{{ reserved_values }}' => implode(StringUtils::ARRAY_VALUES_SEPARATOR, $constraint->reservedValues)]
         );
 
         $this->validator->initialize($context);

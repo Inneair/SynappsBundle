@@ -28,7 +28,7 @@ class ErrorsContent
      * @param array $fieldsErrors Array of fields errors, whose keys are fields names, and values are arrays of error
      * messages.
      */
-    public function __construct(array $globalErrors = array(), array $fieldsErrors = array())
+    public function __construct(array $globalErrors = [], array $fieldsErrors = [])
     {
         $this->globalErrors = $globalErrors;
         $this->fieldsErrors = $fieldsErrors;
