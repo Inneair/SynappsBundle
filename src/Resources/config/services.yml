@@ -1,0 +1,93 @@
+services:
+    ## Data layer
+    # Base repository
+    Inneair\SynappsBundle\Entity\DefaultEntityRepository:
+        abstract: true
+        factory: ['doctrine', getRepository]
+
+    ## Business services
+    # Core abstract service
+    Inneair\SynappsBundle\Service\AbstractService:
+        abstract: true
+        calls:
+            - [setEventDispatcher, ['@event_dispatcher']]
+            - [setEntityManagerRegistry, ['@doctrine']]
+            - [setLogger, ['@logger']]
+            - [init]
+
+    ## Web controllers
+    # Abstract HTTP controller
+    Inneair\SynappsBundle\Controller\AbstractHttpController:
+        abstract: true
+        calls:
+            - [setContainer, ['@service_container']]
+            - [setLogger, ['@logger']]
+            - [init]
+
+    # Abstract REST controller
+    Inneair\SynappsBundle\Controller\AbstractRestController:
+        abstract: true
+        calls:
+            - [setContainer, ['@service_container']]
+            - [setLogger, ['@logger']]
+            - [init]
+
+    ## Validators
+    # HTTP request validator
+    Inneair\SynappsBundle\Validator\Constraints\HttpRequestParametersValidator:
+        arguments:
+            - '@request_stack'
+        tags:
+            - { name: validator.constraint_validator, alias: 'httprequestparametersvalidator' }
+    # NotIn validator
+    Inneair\SynappsBundle\Validator\Constraints\NotInValidator:
+        tags:
+            - { name: validator.constraint_validator, alias: 'notinvalidator' }
+
+    ## AOP
+    # Transactional annotation pointcut
+    Inneair\TransactionBundle\Aop\TransactionalPointcut:
+        arguments:
+            - '@annotation_reader'
+            - '@logger'
+            - true
+        tags:
+            - { name: jms_aop.pointcut, interceptor: 'Inneair\TransactionBundle\Aop\TransactionalInterceptor' }
+    # Interceptor for transaction management
+    Inneair\TransactionBundle\Aop\TransactionalInterceptor:
+        arguments:
+            - '@doctrine'
+            - '@annotation_reader'
+            - '@logger'
+
+    ## JMS serializer configuration
+    # Object constructor used for deserialization
+    Inneair\SynappsBundle\Serializer\DefaultObjectConstructor:
+        arguments:
+            - '@jms_serializer.unserialize_object_constructor'
+            - '@logger'
+    # Formats supported for serialization
+    inneair_synapps.serialization_visitors:
+        class: PhpCollection\Map
+        arguments:
+            -
+                json: '@jms_serializer.json_serialization_visitor'
+                xml: '@jms_serializer.xml_serialization_visitor'
+                yaml: '@jms_serializer.yaml_serialization_visitor'
+    # Formats supported for deserialization
+    inneair_synapps.deserialization_visitors:
+        class: PhpCollection\Map
+        arguments:
+            -
+                json: '@jms_serializer.json_deserialization_visitor'
+                xml: '@jms_serializer.xml_deserialization_visitor'
+    # JMS serialiser
+    inneair_synapps.serializer:
+        class: '%jms_serializer.serializer.class%'
+        arguments:
+            - '@jms_serializer.metadata_factory'
+            - '@jms_serializer.handler_registry'
+            - '@Inneair\SynappsBundle\Serializer\DefaultObjectConstructor'
+            - '@inneair_synapps.serialization_visitors'
+            - '@inneair_synapps.deserialization_visitors'
+            - '@jms_serializer.event_dispatcher'
